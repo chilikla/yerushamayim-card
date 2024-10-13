@@ -1,12 +1,12 @@
 # Yerushamayim
-## Unofficial Yerushamayim Home Assistant dashboard card for the unofficial Yerushamayim integration
+## Unofficial Yerushamayim Home Assistant integration and Lovelace card
 
-### :hammer_and_wrench: Version: v1.0.18
+### :hammer_and_wrench: Version: v1.0.19-initiation.0
 <br/>
 ![screenshot](https://raw.githubusercontent.com/chilikla/yerushamayim/main/screenshot.png)
 
 ### Instructions
-- Add this repo to HACS' Custom repositories: `https://github.com/chilikla/yerushamayim-card`
+- Add this repo to HACS' Custom repositories: `https://github.com/chilikla/yerushamayim`
 - Restart Home Assistant
 - Add card to your dashboard
 
