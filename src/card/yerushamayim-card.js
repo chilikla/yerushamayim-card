@@ -112,7 +112,7 @@ class YerushamayimCard extends LitElement {
       }
       .container {
         background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 100%);
-        border-radius: var(--ha-card-border-radius, 4px);
+        border-radius: var(--ha-card-border-radius, 12px);
         box-shadow: var( --ha-card-box-shadow, 0px 2px 1px -1px rgba(0, 0, 0, 0.2), 0px 1px 1px 0px rgba(0, 0, 0, 0.14), 0px 1px 3px 0px rgba(0, 0, 0, 0.12) );
         padding: 16px;
         font-size: 16px;

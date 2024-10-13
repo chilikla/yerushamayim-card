@@ -1,7 +1,7 @@
 {
-  "name": "yerushamayim",
+  "name": "yerushamayim-card",
   "version": "1.0.0",
-  "description": "Home Assistant Yerusamayim custom card",
+  "description": "Unofficial Yerushamayim Home Assistant dashboard card for the unofficial Yerushamayim integration",
   "main": "yerushamayim-card.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
