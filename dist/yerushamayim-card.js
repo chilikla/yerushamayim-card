@@ -21,6 +21,7 @@ class YerushamayimCard extends LitElement {
   render() {    
     const entityId = this.config.entity;
     const state = this.hass.states[entityId];
+    console.log("states", this.hass.states);
     const stateStr = state ? state.state : 'unavailable';
     const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
 
