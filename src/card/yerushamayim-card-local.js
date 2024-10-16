@@ -176,3 +176,11 @@ class YerushamayimCard extends LitElement {
 }
 
 customElements.define('yerushamayim-card', YerushamayimCard);
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "yerushamayim-card",
+  name: "Yerushamayim Weather Card",
+  preview: true,
+  description: "Unofficial Yerushamayim Home Assistant dashboard card",
+  documentationURL: "https://github.com/chilikla/yerushamayim-card"
+});
