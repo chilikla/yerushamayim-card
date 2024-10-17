@@ -15,6 +15,7 @@ jobs:
     steps:
       - name: create new release
         uses: googleapis/release-please-action@v4
+        id: release
         with:
           # this assumes that you have created a personal access token
           # (PAT) and configured it as a GitHub action secret named
