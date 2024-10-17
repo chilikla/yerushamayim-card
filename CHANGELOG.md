@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.3](https://github.com/chilikla/yerushamayim-card/compare/v1.1.2...v1.1.3) (2024-10-17)
+
+
+### Bug Fixes
+
+* release action ([ff981ba](https://github.com/chilikla/yerushamayim-card/commit/ff981ba362a396e95f2ea56d1e122555fc9b2328))
+* release action [#2](https://github.com/chilikla/yerushamayim-card/issues/2) ([5a0f66c](https://github.com/chilikla/yerushamayim-card/commit/5a0f66c451c6e42f0138275300b15eb4ba17b799))
+* release action [#3](https://github.com/chilikla/yerushamayim-card/issues/3) ([05eb7f3](https://github.com/chilikla/yerushamayim-card/commit/05eb7f326f76493c96ede3c9cfa24a8fa2adaa4b))
+* release action [#4](https://github.com/chilikla/yerushamayim-card/issues/4) ([d8e3e52](https://github.com/chilikla/yerushamayim-card/commit/d8e3e526dcc2d38a4860f448c9611d184b114653))
+
 ## [1.1.2](https://github.com/chilikla/yerushamayim-card/compare/v1.1.1...v1.1.2) (2024-10-17)
 
 
