@@ -24,7 +24,9 @@ jobs:
           # this is a built-in strategy in release-please, see "Action Inputs"
           # for more options
           release-type: node
-      - run: echo ${{join(steps.release.outputs.*, '\n')}}
+      - env:
+          GITHUB_CONTEXT: ${{ toJSON(steps.release.outputs) }}
+        run: echo "$GITHUB_CONTEXT"
       - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
       - name: update README.md
