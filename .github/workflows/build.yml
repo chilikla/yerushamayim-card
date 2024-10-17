@@ -17,23 +17,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
-    - run: npm run rollup
-    - uses: stefanzweifel/git-auto-commit-action@v5
+    - name: build files
+      run: npm run rollup
+    - name: commit dist
+      uses: stefanzweifel/git-auto-commit-action@v5
       with:
-        commit_message: Commit dist
-    # - name: Bump version and push tag
-    #   id: tag_version
-    #   uses: mathieudutour/github-tag-action@v6.2
-    #   with:
-    #     github_token: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Create a GitHub release
-    #   uses: ncipollo/release-action@v1
-    #   with:
-    #     tag: ${{ steps.tag_version.outputs.new_tag }}
-    #     name: Release ${{ steps.tag_version.outputs.new_tag }}
-    #     body: ${{ steps.tag_version.outputs.changelog }}
-    # - name: update README.md
-    #   run: 'sed "s/#-#-#VERSION#-#-#.*/### :hammer_and_wrench: Version: ${{ steps.tag_version.outputs.new_tag }}/g" src/README-template.md > README.md'
-    # - uses: stefanzweifel/git-auto-commit-action@v5
-    #   with:
-    #     commit_message: Commit updated README.md
+        commit_message: commit dist
