@@ -7,7 +7,7 @@ permissions:
   contents: write
   pull-requests: write
 
-name: release-please
+name: Handle release
 
 jobs:
   release-please:
@@ -22,11 +22,15 @@ jobs:
           # token: ${{ secrets.MY_RELEASE_PLEASE_TOKEN }}
           # this is a built-in strategy in release-please, see "Action Inputs"
           # for more options
-          release-type: simple
+          release-type: node
+      - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
       - name: update README.md
+        if: ${{ steps.release.outputs.release_created }}
         run: |
           sed -i 's/Current version: .*/Current version: ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}/' README.md
       - name: commit updated README.md
+        if: ${{ steps.release.outputs.release_created }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: update version in README to ${{ steps.release.outputs.major }}.${{ steps.release.outputs.minor }}.${{ steps.release.outputs.patch }}"
