@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.5](https://github.com/chilikla/yerushamayim-card/compare/v1.1.4...v1.1.5) (2024-10-18)
+
+
+### Bug Fixes
+
+* remove dependency on configuration  - final ([435bf54](https://github.com/chilikla/yerushamayim-card/commit/435bf54f6820f8312f76d8435560d46ac44dd03b))
+
 ## [1.1.4](https://github.com/chilikla/yerushamayim-card/compare/v1.1.3...v1.1.4) (2024-10-18)
 
 
