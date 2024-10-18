@@ -1,7 +1,7 @@
 # Yerushamayim
 ## Unofficial Yerushamayim Home Assistant dashboard card for the unofficial Yerushamayim integration
 
-### Current version: 1.1.1
+### Current version: 1.1.3
 <br/>
 
 ![screenshot](https://raw.githubusercontent.com/chilikla/yerushamayim/main/screenshot.png)
