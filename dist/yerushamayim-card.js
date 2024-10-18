@@ -10,6 +10,8 @@ function loadCSS(url) {
 
 loadCSS("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
+const ENTITY = "sensor.yerushamayim";
+
 class YerushamayimCard extends LitElement {
   static get properties() {
     return {
@@ -19,8 +21,7 @@ class YerushamayimCard extends LitElement {
   }
 
   render() {    
-    const entityId = this.config.entity;
-    const state = this.hass.states[entityId];
+    const state = this.hass.states[ENTITY];
     const stateStr = state ? state.state : 'unavailable';
     const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
 
@@ -91,9 +92,6 @@ class YerushamayimCard extends LitElement {
   }
 
   setConfig(config) {
-    if (!config.entity) {
-      throw new Error('You need to define an entity');
-    }
     this.config = config;
   }
 
