@@ -69,7 +69,7 @@ var W,j;null==J||J(Q,k),(null!==(g=m.litHtmlVersions)&&void 0!==g?g:m.litHtmlVer
                     <bdi>${t.attributes.temperature} °C</bdi>
                   </div>`}
                 <div>
-                  <bdi>${i.attributes.forecast}</bdi>
+                  <bdi>${e.attributes.forecast}</bdi>
                 </div>
               </div>
             `:Z`No data to show`}
