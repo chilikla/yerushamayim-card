@@ -20,10 +20,10 @@ loadCSS("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
 const SENSOR_BASE = "sensor.yerushamayim_";
 const ENTITIES = {
-  TEMPERATURE: SENSOR_BASE = "temperature",
-  HUMIDITY: SENSOR_BASE = "humidity",
-  STATUS: SENSOR_BASE = "status",
-  FORECAST: SENSOR_BASE = "forecast"
+  TEMPERATURE: SENSOR_BASE + "temperature",
+  HUMIDITY: SENSOR_BASE + "humidity",
+  STATUS: SENSOR_BASE + "status",
+  FORECAST: SENSOR_BASE + "forecast"
 };
 
 class YerushamayimCard extends LitElement {
