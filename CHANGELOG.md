@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/chilikla/yerushamayim-card/compare/v1.2.1...v1.2.2) (2024-10-22)
+
+
+### Bug Fixes
+
+* forecast text ([ea7d9a9](https://github.com/chilikla/yerushamayim-card/commit/ea7d9a9e9a269c162b84064603ea05c478815fb2))
+
 ## [1.2.1](https://github.com/chilikla/yerushamayim-card/compare/v1.2.0...v1.2.1) (2024-10-22)
 
 
