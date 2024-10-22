@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/chilikla/yerushamayim-card/compare/v1.2.0...v1.2.1) (2024-10-22)
+
+
+### Bug Fixes
+
+* state constants ([1adf764](https://github.com/chilikla/yerushamayim-card/commit/1adf764c244aac8ca9005e558d49547ede0ac5cc))
+
 ## [1.2.0](https://github.com/chilikla/yerushamayim-card/compare/v1.1.5...v1.2.0) (2024-10-22)
 
 
