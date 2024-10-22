@@ -92,7 +92,7 @@ class YerushamayimCard extends LitElement {
                   </div>`
                 }
                 <div>
-                  <bdi>${forecastState.attributes.forecast}</bdi>
+                  <bdi>${statusState.attributes.forecast}</bdi>
                 </div>
               </div>
             `
