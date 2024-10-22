@@ -14,7 +14,13 @@ function loadCSS(url) {
 
 loadCSS("https://fonts.googleapis.com/css2?family=Rubik&display=swap");
 
-const ENTITY = "sensor.yerushamayim";
+const SENSOR_BASE = "sensor.yerushamayim_";
+const ENTITIES = {
+  TEMPERATURE: SENSOR_BASE = "temperature",
+  HUMIDITY: SENSOR_BASE = "humidity",
+  STATUS: SENSOR_BASE = "status",
+  FORECAST: SENSOR_BASE = "forecast"
+};
 
 class YerushamayimCard extends LitElement {
   static get properties() {
@@ -25,23 +31,25 @@ class YerushamayimCard extends LitElement {
   }
 
   render() {    
-    const state = this.hass.states[ENTITY];
-    const stateStr = state ? state.state : 'unavailable';
+    const temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
+    const statusState = this.hass.states[ENTITIES.STATUS];
+    const forecastState = this.hass.states[ENTITIES.FORECAST];
+    const temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
     const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
 
     return html`
       <ha-card>
         <div class="container">
-        ${ (stateStr !== 'unavailable' && state.attributes.current_temp !== null)
+        ${ (temperatureStateStr !== 'unavailable' && temperatureState.attributes.temperature !== null)
             ? html`
               <div id="left">
                 <div id="status-container">
-                  ${ (state.attributes.status_icon)
+                  ${ (statusState.attributes.cloth_icon)
                     ? html`<div>
-                      <img class="icon" src="${state.attributes.status_icon}" title="${state.attributes.status_icon_info}">
+                      <img class="icon" src="${statusState.attributes.cloth_icon}" title="${statusState.attributes.cloth_info}">
                     </div>
                     <div id="icon-info" dir="rtl">
-                      <bdi>${state.attributes.status_title}</bdi>
+                      <bdi>${statusState.attributes.status}</bdi>
                     </div>
                     `
                     : html``
@@ -54,14 +62,14 @@ class YerushamayimCard extends LitElement {
                     <img src="https://www.02ws.co.il/img/morning_icon_night.png">
                   </div>
                   <div class="forecast-icon">
-                    <bdi>${state.attributes.night_temp} °C</bdi>
-                    <bdi>${state.attributes.noon_temp} °C</bdi>
-                    <bdi>${state.attributes.morning_temp} °C</bdi>
+                    <bdi>${forecastState.attributes.night_temp} °C</bdi>
+                    <bdi>${forecastState.attributes.noon_temp} °C</bdi>
+                    <bdi>${forecastState.attributes.morning_temp} °C</bdi>
                   </div>
                   <div class="forecast-icon">
-                    <img src="${state.attributes.night_cloth_icon}" title="${state.attributes.night_cloth_info}">
-                    <img src="${state.attributes.noon_cloth_icon}" title="${state.attributes.noon_cloth_info}">
-                    <img src="${state.attributes.morning_cloth_icon}" title="${state.attributes.morning_cloth_info}">
+                    <img src="${forecastState.attributes.night_cloth_icon}" title="${forecastState.attributes.night_cloth_info}">
+                    <img src="${forecastState.attributes.noon_cloth_icon}" title="${forecastState.attributes.noon_cloth_info}">
+                    <img src="${forecastState.attributes.morning_cloth_icon}" title="${forecastState.attributes.morning_cloth_info}">
                   </div>
                 </div>
               </div>
@@ -69,22 +77,22 @@ class YerushamayimCard extends LitElement {
                 <img class="logo" src="${logUrl}">
                 <div class="block" id="current-temp">
                   <bdi>
-                    ${state.attributes.current_temp}
+                    ${temperatureState.attributes.temperature}
                     <span>°C </span>
                   </bdi>
                 </div>
-                ${state.attributes.feels_like_temp
+                ${temperatureState.attributes.apparent_temperature
                   ? html`<div class="block">
                     <span>מרגיש כמו: </span>
-                    <bdi>${state.attributes.feels_like_temp} °C</bdi>
+                    <bdi>${temperatureState.attributes.apparent_temperature} °C</bdi>
                   </div>`
                   : html`<div class="block">
                     <span>מרגיש כמו: </span>
-                    <bdi>${state.attributes.current_temp} °C</bdi>
+                    <bdi>${temperatureState.attributes.temperature} °C</bdi>
                   </div>`
                 }
                 <div>
-                  <bdi>${state.attributes.forecast_text}</bdi>
+                  <bdi>${forecastState.attributes.forecast}</bdi>
                 </div>
               </div>
             `
