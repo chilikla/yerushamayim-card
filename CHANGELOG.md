@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/chilikla/yerushamayim-card/compare/v1.1.5...v1.2.0) (2024-10-22)
+
+
+### Features
+
+* update card with current sensor ([d858274](https://github.com/chilikla/yerushamayim-card/commit/d858274141bee64edf69a2be1d1ead4d73e40df5))
+
 ## [1.1.5](https://github.com/chilikla/yerushamayim-card/compare/v1.1.4...v1.1.5) (2024-10-18)
 
 
