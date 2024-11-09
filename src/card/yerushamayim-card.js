@@ -30,30 +30,43 @@ class YerushamayimCard extends LitElement {
     };
   }
 
-  render() {    
+  render() {
     const temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
     const statusState = this.hass.states[ENTITIES.STATUS];
     const forecastState = this.hass.states[ENTITIES.FORECAST];
     const temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
     const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
 
+    const now = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    this.hass.callWS({
+      "id": 1,
+      "type": "history/statistics_during_period",
+      "start_time": yesterday.toISOString(),
+      "end_time": now.toISOString(),
+      "statistic_ids": [ENTITIES.TEMPERATURE]
+    }).then((response) => {
+      console.log("response", response)
+    });
+
     return html`
       <ha-card>
         <div class="container">
-        ${ (temperatureStateStr !== 'unavailable' && temperatureState.attributes.temperature !== null)
-            ? html`
+        ${(temperatureStateStr !== 'unavailable' && temperatureState.attributes.temperature !== null)
+        ? html`
               <div id="left">
                 <div id="status-container">
-                  ${ (statusState.attributes.cloth_icon)
-                    ? html`<div>
+                  ${(statusState.attributes.cloth_icon)
+            ? html`<div>
                       <img class="icon" src="${statusState.attributes.cloth_icon}" title="${statusState.attributes.cloth_info}">
                     </div>
                     <div id="icon-info" dir="rtl">
                       <bdi>${statusState.attributes.status}</bdi>
                     </div>
                     `
-                    : html``
-                  }
+            : html``
+          }
                 </div>
                 <div>
                   <div class="forecast-icon">
@@ -82,22 +95,22 @@ class YerushamayimCard extends LitElement {
                   </bdi>
                 </div>
                 ${temperatureState.attributes.apparent_temperature
-                  ? html`<div class="block">
+            ? html`<div class="block">
                     <span>מרגיש כמו: </span>
                     <bdi>${temperatureState.attributes.apparent_temperature} °C</bdi>
                   </div>`
-                  : html`<div class="block">
+            : html`<div class="block">
                     <span>מרגיש כמו: </span>
                     <bdi>${temperatureState.attributes.temperature} °C</bdi>
                   </div>`
-                }
+          }
                 <div>
                   <bdi>${statusState.attributes.forecast}</bdi>
                 </div>
               </div>
             `
-            : html`No data to show`
-        }
+        : html`No data to show`
+      }
         </div>
       </ha-card>
     `;
