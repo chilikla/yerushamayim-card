@@ -30,46 +30,81 @@ class YerushamayimCard extends LitElement {
     };
   }
 
-  render() {
+  constructor() {
+    super();
     const temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
     const statusState = this.hass.states[ENTITIES.STATUS];
     const forecastState = this.hass.states[ENTITIES.FORECAST];
     const temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
     const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
+    const lastDayState = {};
+  }
 
-    const lastDayStats = {};
-    const now = new Date();
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    this.hass.callWS({
-      "id": 1,
-      "type": "history/history_during_period",
-      "start_time": yesterday.toISOString(),
-      "end_time": now.toISOString(),
-      "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
-    }).then((response) => {
+  async firstUpdated() {
+    await this.fetchLastDayState();
+  }
+
+  async fetchLastDayState() {
+    try {
+      const response = await this.hass.callWS({
+        "id": 1,
+        "type": "history/history_during_period",
+        "start_time": yesterday.toISOString(),
+        "end_time": now.toISOString(),
+        "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
+      });
       console.log("response", response);
-      lastDayStats.temperature = response[ENTITIES.TEMPERATURE][0].a.temperature;
-      lastDayStats.apparent_temperature = response[ENTITIES.TEMPERATURE][0].a.apparent_temperature;
-      lastDayStats.day_icon  = response[ENTITIES.STATUS][0].a.day_icon;
-      lastDayStats.status  = response[ENTITIES.STATUS][0].a.status;
-      console.log("lastDayStats 1", lastDayStats)
-    });
-    console.log("lastDayStats 2", lastDayStats)
+      this.lastDayState.temperature = response[ENTITIES.TEMPERATURE][0].a.temperature;
+      this.lastDayState.apparent_temperature = response[ENTITIES.TEMPERATURE][0].a.apparent_temperature;
+      this.lastDayState.day_icon = response[ENTITIES.STATUS][0].a.day_icon;
+      this.lastDayState.status = response[ENTITIES.STATUS][0].a.status;
+      console.log("lastDayState 1", lastDayStats)
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+
+  render() {
+    // const temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
+    // const statusState = this.hass.states[ENTITIES.STATUS];
+    // const forecastState = this.hass.states[ENTITIES.FORECAST];
+    // const temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
+    // const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
+
+    // const lastDayStats = {};
+    // const now = new Date();
+    // const yesterday = new Date();
+    // yesterday.setDate(yesterday.getDate() - 1);
+    // const moshe = await this.hass.callWS({
+    //   "id": 1,
+    //   "type": "history/history_during_period",
+    //   "start_time": yesterday.toISOString(),
+    //   "end_time": now.toISOString(),
+    //   "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
+    // });
+    // .then((response) => {
+    //   console.log("response", response);
+    //   lastDayStats.temperature = response[ENTITIES.TEMPERATURE][0].a.temperature;
+    //   lastDayStats.apparent_temperature = response[ENTITIES.TEMPERATURE][0].a.apparent_temperature;
+    //   lastDayStats.day_icon = response[ENTITIES.STATUS][0].a.day_icon;
+    //   lastDayStats.status = response[ENTITIES.STATUS][0].a.status;
+    //   console.log("lastDayStats 1", lastDayStats)
+    // });
+    // console.log("lastDayStats 2", lastDayStats)
 
     return html`
       <ha-card>
         <div class="container">
-        ${(temperatureStateStr !== 'unavailable' && temperatureState.attributes.temperature !== null)
+        ${(this.temperatureStateStr !== 'unavailable' && this.temperatureState.attributes.temperature !== null)
         ? html`
               <div id="left">
                 <div id="status-container">
-                  ${(statusState.attributes.cloth_icon)
+                  ${(this.statusState.attributes.cloth_icon)
             ? html`<div>
-                      <img class="icon" src="${statusState.attributes.cloth_icon}" title="${statusState.attributes.cloth_info}">
+                      <img class="icon" src="${this.statusState.attributes.cloth_icon}" title="${this.statusState.attributes.cloth_info}">
                     </div>
                     <div id="icon-info" dir="rtl">
-                      <bdi>${statusState.attributes.status}</bdi>
+                      <bdi>${this.statusState.attributes.status}</bdi>
                     </div>
                     `
             : html``
@@ -82,14 +117,14 @@ class YerushamayimCard extends LitElement {
                     <img src="https://www.02ws.co.il/img/morning_icon_night.png">
                   </div>
                   <div class="forecast-icon">
-                    <bdi>${forecastState.attributes.night_temp} °C</bdi>
-                    <bdi>${forecastState.attributes.noon_temp} °C</bdi>
-                    <bdi>${forecastState.attributes.morning_temp} °C</bdi>
+                    <bdi>${this.forecastState.attributes.night_temp} °C</bdi>
+                    <bdi>${this.forecastState.attributes.noon_temp} °C</bdi>
+                    <bdi>${this.forecastState.attributes.morning_temp} °C</bdi>
                   </div>
                   <div class="forecast-icon">
-                    <img src="${forecastState.attributes.night_cloth_icon}" title="${forecastState.attributes.night_cloth_info}">
-                    <img src="${forecastState.attributes.noon_cloth_icon}" title="${forecastState.attributes.noon_cloth_info}">
-                    <img src="${forecastState.attributes.morning_cloth_icon}" title="${forecastState.attributes.morning_cloth_info}">
+                    <img src="${this.forecastState.attributes.night_cloth_icon}" title="${this.forecastState.attributes.night_cloth_info}">
+                    <img src="${this.forecastState.attributes.noon_cloth_icon}" title="${this.forecastState.attributes.noon_cloth_info}">
+                    <img src="${this.forecastState.attributes.morning_cloth_icon}" title="${this.forecastState.attributes.morning_cloth_info}">
                   </div>
                 </div>
               </div>
@@ -97,22 +132,22 @@ class YerushamayimCard extends LitElement {
                 <img class="logo" src="${logUrl}">
                 <div class="block" id="current-temp">
                   <bdi>
-                    ${temperatureState.attributes.temperature}
+                    ${this.temperatureState.attributes.temperature}
                     <span>°C </span>
                   </bdi>
                 </div>
-                ${temperatureState.attributes.apparent_temperature
+                ${this.temperatureState.attributes.apparent_temperature
             ? html`<div class="block">
                     <span>מרגיש כמו: </span>
-                    <bdi>${temperatureState.attributes.apparent_temperature} °C</bdi>
+                    <bdi>${this.temperatureState.attributes.apparent_temperature} °C</bdi>
                   </div>`
             : html`<div class="block">
                     <span>מרגיש כמו: </span>
-                    <bdi>${temperatureState.attributes.temperature} °C</bdi>
+                    <bdi>${this.temperatureState.attributes.temperature} °C</bdi>
                   </div>`
           }
                 <div>
-                  <bdi>${statusState.attributes.forecast}</bdi>
+                  <bdi>${this.statusState.attributes.forecast}</bdi>
                 </div>
               </div>
             `
