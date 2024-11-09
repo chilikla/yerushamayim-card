@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.6](https://github.com/chilikla/yerushamayim-card/compare/v1.3.5...v1.3.6) (2024-11-09)
+
+
+### Bug Fixes
+
+* change litelement structure 2 ([83c08c9](https://github.com/chilikla/yerushamayim-card/commit/83c08c9d91c4869d5c1b1de09d33169f95895aee))
+
 ## [1.3.5](https://github.com/chilikla/yerushamayim-card/compare/v1.3.4...v1.3.5) (2024-11-09)
 
 
