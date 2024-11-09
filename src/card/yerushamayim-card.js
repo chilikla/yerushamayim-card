@@ -42,7 +42,7 @@ class YerushamayimCard extends LitElement {
     yesterday.setDate(yesterday.getDate() - 1);
     this.hass.callWS({
       "id": 1,
-      "type": "history/statistics_during_period",
+      "type": "history/history_during_period",
       "start_time": yesterday.toISOString(),
       "end_time": now.toISOString(),
       "statistic_ids": [ENTITIES.TEMPERATURE]
