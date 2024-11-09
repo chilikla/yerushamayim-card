@@ -28,11 +28,12 @@ class YerushamayimCard extends LitElement {
 
   constructor() {
     super();
-    const temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
-    this.hass.states[ENTITIES.STATUS];
-    this.hass.states[ENTITIES.FORECAST];
-    temperatureState ? temperatureState.state : 'unavailable';
-    this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
+    this.temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
+    this.statusState = this.hass.states[ENTITIES.STATUS];
+    this.forecastState = this.hass.states[ENTITIES.FORECAST];
+    this.temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
+    this.logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
+    this.lastDayState = {};
   }
 
   async firstUpdated() {
@@ -124,7 +125,7 @@ class YerushamayimCard extends LitElement {
                 </div>
               </div>
               <div id="right" dir="rtl">
-                <img class="logo" src="${logUrl}">
+                <img class="logo" src="${this.logUrl}">
                 <div class="block" id="current-temp">
                   <bdi>
                     ${this.temperatureState.attributes.temperature}
