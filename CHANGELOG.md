@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.2](https://github.com/chilikla/yerushamayim-card/compare/v1.3.1...v1.3.2) (2024-11-09)
+
+
+### Bug Fixes
+
+* fix ws request key ([d2d5b3c](https://github.com/chilikla/yerushamayim-card/commit/d2d5b3c8ff5772aea0790bd4edfe0fdefb1a7016))
+
 ## [1.3.1](https://github.com/chilikla/yerushamayim-card/compare/v1.3.0...v1.3.1) (2024-11-09)
 
 
