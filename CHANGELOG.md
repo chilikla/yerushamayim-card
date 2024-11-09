@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.3](https://github.com/chilikla/yerushamayim-card/compare/v1.3.2...v1.3.3) (2024-11-09)
+
+
+### Bug Fixes
+
+* set lastDayStats ([2b4f6c1](https://github.com/chilikla/yerushamayim-card/commit/2b4f6c1adf16960f3c82bd294dd6653ff44b2421))
+
 ## [1.3.2](https://github.com/chilikla/yerushamayim-card/compare/v1.3.1...v1.3.2) (2024-11-09)
 
 
