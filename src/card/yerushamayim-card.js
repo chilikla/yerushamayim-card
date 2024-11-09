@@ -25,27 +25,54 @@ const ENTITIES = {
 class YerushamayimCard extends LitElement {
   static get properties() {
     return {
-      hass: {},
-      config: {}
+      hass: { type: Object },
+      config: { type: Object },
+      temperatureState: { type: Object, state: true },
+      statusState: { type: Object, state: true },
+      forecastState: { type: Object, state: true },
+      temperatureStateStr: { type: String, state: true },
+      logoUrl: { type: String, state: true },
+      lastDayState: { type: Object, state: true }
     };
   }
 
   constructor() {
     super();
-    this.temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
-    this.statusState = this.hass.states[ENTITIES.STATUS];
-    this.forecastState = this.hass.states[ENTITIES.FORECAST];
-    this.temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
-    this.logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
     this.lastDayState = {};
   }
 
+  // This will be called whenever hass updates
+  updated(changedProperties) {
+    if (changedProperties.has('hass')) {
+      this.updateStates();
+    }
+  }
+
+  // Update all states when hass changes
+  updateStates() {
+    if (!this.hass) return;
+
+    this.temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
+    this.statusState = this.hass.states[ENTITIES.STATUS];
+    this.forecastState = this.hass.states[ENTITIES.FORECAST];
+    this.temperatureStateStr = this.temperatureState ? this.temperatureState.state : 'unavailable';
+    this.logoUrl = this.hass.states['sun.sun'].state === 'below_horizon' 
+      ? 'https://www.02ws.co.il/img/logo_night.png' 
+      : 'https://www.02ws.co.il/img/logo.png';
+  }
+
   async firstUpdated() {
-    await this.fetchLastDayState();
+    if (this.hass) {
+      await this.fetchLastDayState();
+    }
   }
 
   async fetchLastDayState() {
     try {
+      const now = new Date();
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+
       const response = await this.hass.callWS({
         "id": 1,
         "type": "history/history_during_period",
@@ -53,44 +80,25 @@ class YerushamayimCard extends LitElement {
         "end_time": now.toISOString(),
         "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
       });
-      console.log("response", response);
-      this.lastDayState.temperature = response[ENTITIES.TEMPERATURE][0].a.temperature;
-      this.lastDayState.apparent_temperature = response[ENTITIES.TEMPERATURE][0].a.apparent_temperature;
-      this.lastDayState.day_icon = response[ENTITIES.STATUS][0].a.day_icon;
-      this.lastDayState.status = response[ENTITIES.STATUS][0].a.status;
-      console.log("lastDayState 1", lastDayStats)
+      
+      if (response && response[ENTITIES.TEMPERATURE]?.[0]?.a) {
+        this.lastDayState = {
+          temperature: response[ENTITIES.TEMPERATURE][0].a.temperature,
+          apparent_temperature: response[ENTITIES.TEMPERATURE][0].a.apparent_temperature,
+          day_icon: response[ENTITIES.STATUS][0].a.day_icon,
+          status: response[ENTITIES.STATUS][0].a.status
+        };
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   }
 
   render() {
-    // const temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
-    // const statusState = this.hass.states[ENTITIES.STATUS];
-    // const forecastState = this.hass.states[ENTITIES.FORECAST];
-    // const temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
-    // const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
-
-    // const lastDayStats = {};
-    // const now = new Date();
-    // const yesterday = new Date();
-    // yesterday.setDate(yesterday.getDate() - 1);
-    // const moshe = await this.hass.callWS({
-    //   "id": 1,
-    //   "type": "history/history_during_period",
-    //   "start_time": yesterday.toISOString(),
-    //   "end_time": now.toISOString(),
-    //   "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
-    // });
-    // .then((response) => {
-    //   console.log("response", response);
-    //   lastDayStats.temperature = response[ENTITIES.TEMPERATURE][0].a.temperature;
-    //   lastDayStats.apparent_temperature = response[ENTITIES.TEMPERATURE][0].a.apparent_temperature;
-    //   lastDayStats.day_icon = response[ENTITIES.STATUS][0].a.day_icon;
-    //   lastDayStats.status = response[ENTITIES.STATUS][0].a.status;
-    //   console.log("lastDayStats 1", lastDayStats)
-    // });
-    // console.log("lastDayStats 2", lastDayStats)
+    if (!this.hass || !this.temperatureState) {
+      return html`<ha-card><div class="container">Loading...</div></ha-card>`;
+    }
+    console.log(this.lastDayState);
 
     return html`
       <ha-card>
@@ -129,7 +137,7 @@ class YerushamayimCard extends LitElement {
                 </div>
               </div>
               <div id="right" dir="rtl">
-                <img class="logo" src="${this.logUrl}">
+                <img class="logo" src="${this.logoUrl}">
                 <div class="block" id="current-temp">
                   <bdi>
                     ${this.temperatureState.attributes.temperature}
