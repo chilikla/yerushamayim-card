@@ -37,7 +37,7 @@ class YerushamayimCard extends LitElement {
     const temperatureStateStr = temperatureState ? temperatureState.state : 'unavailable';
     const logUrl = this.hass.states['sun.sun'].state === 'below_horizon' ? 'https://www.02ws.co.il/img/logo_night.png' : 'https://www.02ws.co.il/img/logo.png';
 
-    let lastDayStats = {};
+    const lastDayStats = {};
     const now = new Date();
     const yesterday = new Date();
     yesterday.setDate(yesterday.getDate() - 1);
@@ -48,12 +48,14 @@ class YerushamayimCard extends LitElement {
       "end_time": now.toISOString(),
       "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
     }).then((response) => {
+      console.log("response", response);
       lastDayStats.temperature = response[ENTITIES.TEMPERATURE][0].a.temperature;
       lastDayStats.apparent_temperature = response[ENTITIES.TEMPERATURE][0].a.apparent_temperature;
       lastDayStats.day_icon  = response[ENTITIES.STATUS][0].a.day_icon;
       lastDayStats.status  = response[ENTITIES.STATUS][0].a.status;
+      console.log("lastDayStats 1", lastDayStats)
     });
-    console.log("lastDayStats", lastDayStats)
+    console.log("lastDayStats 2", lastDayStats)
 
     return html`
       <ha-card>
