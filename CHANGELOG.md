@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0](https://github.com/chilikla/yerushamayim-card/compare/v1.2.2...v1.3.0) (2024-11-09)
+
+
+### Features
+
+* consolidating code and features ([9ceb1d0](https://github.com/chilikla/yerushamayim-card/commit/9ceb1d095dc8a8fea8d447ae75a1b47adfe941da))
+* show sensor history ([65d5096](https://github.com/chilikla/yerushamayim-card/commit/65d5096b2f21564519423402e21f227f4bb3de66))
+
 ## [1.2.2](https://github.com/chilikla/yerushamayim-card/compare/v1.2.1...v1.2.2) (2024-10-22)
 
 
