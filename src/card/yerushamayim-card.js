@@ -45,7 +45,7 @@ class YerushamayimCard extends LitElement {
       "type": "history/history_during_period",
       "start_time": yesterday.toISOString(),
       "end_time": now.toISOString(),
-      "statistic_ids": [ENTITIES.TEMPERATURE]
+      "entity_ids": [ENTITIES.TEMPERATURE]
     }).then((response) => {
       console.log("response", response)
     });
