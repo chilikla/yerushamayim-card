@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.8](https://github.com/chilikla/yerushamayim-card/compare/v1.3.7...v1.3.8) (2024-11-10)
+
+
+### Bug Fixes
+
+* upgrade lit-element version ([dd38d96](https://github.com/chilikla/yerushamayim-card/commit/dd38d9696a58dba15fa382d27afb46dbd120bc15))
+
 ## [1.3.7](https://github.com/chilikla/yerushamayim-card/compare/v1.3.6...v1.3.7) (2024-11-09)
 
 
