@@ -2,7 +2,7 @@ import {
   LitElement,
   html,
   css
-} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";
+} from "https://unpkg.com/lit-element@3.3.3	/lit-element.js?module";
 
 function loadCSS(url) {
   const link = document.createElement("link");
@@ -98,7 +98,7 @@ class YerushamayimCard extends LitElement {
     if (!this.hass || !this.temperatureState) {
       return html`<ha-card><div class="container">Loading...</div></ha-card>`;
     }
-    console.log(this.lastDayState);
+    // console.log(this.lastDayState);
 
     return html`
       <ha-card>
