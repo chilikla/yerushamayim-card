@@ -106,7 +106,7 @@ class YerushamayimCard extends LitElement {
     if (!this.hass || !this.temperatureState) {
       return html`<ha-card><div class="container">Loading...</div></ha-card>`;
     }
-    // console.log(this.lastDayState);
+    console.log(this.config);
 
     return html`
       <ha-card @click="${this.handleClick}" style="cursor: pointer;">
@@ -195,7 +195,7 @@ class YerushamayimCard extends LitElement {
               </div>
             </div>
           </div>
-          ${this.lastDayState
+          ${this.config.hide_yesterday && this.lastDayState
             ? html`<div class="container-bottom" dir="rtl">
                 <div class="yesterday-container">
                   <div>אתמול:</div>
