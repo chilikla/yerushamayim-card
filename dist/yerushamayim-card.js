@@ -90,6 +90,18 @@ class YerushamayimCard extends LitElement {
     }
   }
 
+  handleClick() {
+    if (this.hass) {
+      const entityFilterPattern = "sensor.yerushamayim_";
+      window.history.pushState(null, "", `/config/entities?filter=${entityFilterPattern}`);
+      const event = new Event('location-changed', {
+        bubbles: true,
+        composed: true
+      });
+      window.dispatchEvent(event);
+    }
+  }
+
   render() {
     if (!this.hass || !this.temperatureState) {
       return html`<ha-card><div class="container">Loading...</div></ha-card>`;
@@ -97,7 +109,7 @@ class YerushamayimCard extends LitElement {
     // console.log(this.lastDayState);
 
     return html`
-      <ha-card>
+      <ha-card @click="${this.handleClick}" style="cursor: pointer;">
         <div class="container">
         ${(this.temperatureStateStr !== 'unavailable' && this.temperatureState.attributes.temperature !== null)
         ? html`
