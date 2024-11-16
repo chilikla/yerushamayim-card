@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.9](https://github.com/chilikla/yerushamayim-card/compare/v1.3.8...v1.3.9) (2024-11-16)
+
+
+### Bug Fixes
+
+* add yesterday data to card ([20ad36d](https://github.com/chilikla/yerushamayim-card/commit/20ad36ddc2de6a922de555da036ef525dae59c78))
+
 ## [1.3.8](https://github.com/chilikla/yerushamayim-card/compare/v1.3.7...v1.3.8) (2024-11-10)
 
 
