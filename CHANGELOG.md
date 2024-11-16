@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.10](https://github.com/chilikla/yerushamayim-card/compare/v1.3.9...v1.3.10) (2024-11-16)
+
+
+### Bug Fixes
+
+* click on card show entities ([a7c2f95](https://github.com/chilikla/yerushamayim-card/commit/a7c2f951f4e8a20f77e28dca626154a60dee889f))
+
 ## [1.3.9](https://github.com/chilikla/yerushamayim-card/compare/v1.3.8...v1.3.9) (2024-11-16)
 
 
