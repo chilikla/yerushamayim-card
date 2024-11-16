@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.11](https://github.com/chilikla/yerushamayim-card/compare/v1.3.10...v1.3.11) (2024-11-16)
+
+
+### Bug Fixes
+
+* add hide parameter ([fd83e66](https://github.com/chilikla/yerushamayim-card/commit/fd83e66a78d00a306f28596566778ab598e998f0))
+
 ## [1.3.10](https://github.com/chilikla/yerushamayim-card/compare/v1.3.9...v1.3.10) (2024-11-16)
 
 
