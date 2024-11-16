@@ -195,7 +195,7 @@ class YerushamayimCard extends LitElement {
               </div>
             </div>
           </div>
-          ${this.config.hide_yesterday && this.lastDayState
+          ${!this.config.hide_yesterday && this.lastDayState
             ? html`<div class="container-bottom" dir="rtl">
                 <div class="yesterday-container">
                   <div>אתמול:</div>
