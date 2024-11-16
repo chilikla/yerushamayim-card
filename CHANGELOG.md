@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.13](https://github.com/chilikla/yerushamayim-card/compare/v1.3.12...v1.3.13) (2024-11-16)
+
+
+### Bug Fixes
+
+* update readme ([a74a4dc](https://github.com/chilikla/yerushamayim-card/commit/a74a4dcfafed08f20241dfeef7ab240d2cec29f5))
+
 ## [1.3.12](https://github.com/chilikla/yerushamayim-card/compare/v1.3.11...v1.3.12) (2024-11-16)
 
 
