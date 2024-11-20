@@ -216,9 +216,12 @@ class YerushamayimCard extends LitElement {
                       </div>
                     </div>
                     <div class="yesterday-status">
-                      <img src="${this.lastDayState.day_icon}" />
-                      <span>&nbsp;&nbsp;</span>
-                      ${this.lastDayState.status}
+                      <div>
+                        <img style="height: 30px;" src="${this.lastDayState.day_icon}" />
+                      </div>
+                      <div>
+                        ${this.lastDayState.status}
+                      </div>
                     </div>
                   </div>
                 </div
@@ -323,8 +326,11 @@ class YerushamayimCard extends LitElement {
         font-size: 24px;
       }
       .yesterday-status {
+        height: 55px;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-end;
       }
     `;
   }
