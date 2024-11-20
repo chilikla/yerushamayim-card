@@ -200,15 +200,16 @@ class YerushamayimCard extends LitElement {
                   <div>אתמול:</div>
                   <div class="yesterday-row" dir="rtl">
                     <div>
-                      <span class="yesterday-temperature">
+                      <div class="yesterday-temperature">
                         <span dir="rtl"> C°</span>
                         <span>${this.lastDayState.temperature}</span>
-                      </span>
-                      <span>&nbsp;(מרגיש כמו:</span>
-                      <bdi class="yesterday">
-                        ${this.lastDayState.apparent_temperature} °C
-                      </bdi>
-                      <span>)</span>
+                      </div>
+                      <div style="margin-top: 8px;">
+                        <span>מרגיש כמו:</span>
+                        <bdi class="yesterday">
+                          ${this.lastDayState.apparent_temperature} °C
+                        </bdi>
+                      </div>
                     </div>
                     <div class="yesterday-status">
                       <img src="${this.lastDayState.day_icon}" />
@@ -312,7 +313,7 @@ class YerushamayimCard extends LitElement {
         margin-top: 8px;
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
       }
       .yesterday-temperature {
         font-size: 24px;
