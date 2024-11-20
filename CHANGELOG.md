@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.14](https://github.com/chilikla/yerushamayim-card/compare/v1.3.13...v1.3.14) (2024-11-20)
+
+
+### Bug Fixes
+
+* card width in sections view ([f2ce861](https://github.com/chilikla/yerushamayim-card/commit/f2ce8614474a293cf19715fdc107f92bbbe88409))
+
 ## [1.3.13](https://github.com/chilikla/yerushamayim-card/compare/v1.3.12...v1.3.13) (2024-11-16)
 
 
