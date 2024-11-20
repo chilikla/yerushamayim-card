@@ -106,7 +106,6 @@ class YerushamayimCard extends LitElement {
     if (!this.hass || !this.temperatureState) {
       return html`<ha-card><div class="container">Loading...</div></ha-card>`;
     }
-    console.log(this.config);
 
     return html`
       <ha-card @click="${this.handleClick}" style="cursor: pointer;">
@@ -251,7 +250,6 @@ class YerushamayimCard extends LitElement {
         );
         padding: 16px;
         font-size: 16px;
-        width: 450px;
       }
       .container-top {
         display: flex;
