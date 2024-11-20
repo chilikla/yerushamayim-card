@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.16](https://github.com/chilikla/yerushamayim-card/compare/v1.3.15...v1.3.16) (2024-11-20)
+
+
+### Bug Fixes
+
+* yesterday div height ([292cba7](https://github.com/chilikla/yerushamayim-card/commit/292cba7c12d41b0dc66eeb9603e9382383e77bbb))
+
 ## [1.3.15](https://github.com/chilikla/yerushamayim-card/compare/v1.3.14...v1.3.15) (2024-11-20)
 
 
