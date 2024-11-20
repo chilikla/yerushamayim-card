@@ -203,8 +203,8 @@ class YerushamayimCard extends LitElement {
                 <div class="yesterday-container">
                   <div>אתמול:</div>
                   <div class="yesterday-row" dir="rtl">
-                    <div>
-                      <div class="yesterday-temperature">
+                    <div class="yesterday-temperature">
+                      <div style="font-size: 24px;">
                         <span dir="rtl"> C°</span>
                         <span>${this.lastDayState.temperature}</span>
                       </div>
@@ -323,7 +323,11 @@ class YerushamayimCard extends LitElement {
         align-items: flex-start;
       }
       .yesterday-temperature {
-        font-size: 24px;
+        height: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
       }
       .yesterday-status {
         height: 55px;
