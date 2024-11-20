@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.15](https://github.com/chilikla/yerushamayim-card/compare/v1.3.14...v1.3.15) (2024-11-20)
+
+
+### Bug Fixes
+
+* move feels like to second row ([5943842](https://github.com/chilikla/yerushamayim-card/commit/59438422975a712df3a603328baf5985f223c2e3))
+
 ## [1.3.14](https://github.com/chilikla/yerushamayim-card/compare/v1.3.13...v1.3.14) (2024-11-20)
 
 
