@@ -92,8 +92,8 @@ class YerushamayimCard extends LitElement {
 
   handleClick() {
     if (this.hass) {
-      const entityFilterPattern = "sensor.yerushamayim_";
-      window.history.pushState(null, "", `/config/entities?filter=${entityFilterPattern}`);
+      const domain = "yerushamayim";
+      window.history.pushState(null, "", `config/entities?historyBack=1&domain=${domain}`);
       const event = new Event('location-changed', {
         bubbles: true,
         composed: true
