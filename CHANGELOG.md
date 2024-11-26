@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.18](https://github.com/chilikla/yerushamayim-card/compare/v1.3.17...v1.3.18) (2024-11-26)
+
+
+### Bug Fixes
+
+* click behavior ([cf14b74](https://github.com/chilikla/yerushamayim-card/commit/cf14b74d0a9671081c47980dd6f830c6f40b3c1e))
+
 ## [1.3.17](https://github.com/chilikla/yerushamayim-card/compare/v1.3.16...v1.3.17) (2024-11-20)
 
 
