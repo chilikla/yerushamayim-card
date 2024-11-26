@@ -97,7 +97,7 @@ class YerushamayimCard extends LitElement {
   handleClick() {
     if (this.hass) {
       const domain = "yerushamayim";
-      window.history.replaceState(null, "", `config/entities?historyBack=1&domain=${domain}`);
+      window.history.pushState(null, "", `/config/entities?historyBack=1&domain=${domain}`);
       const event = new Event('location-changed', {
         bubbles: true,
         composed: true
