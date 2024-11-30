@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/chilikla/yerushamayim-card/compare/v1.3.20...v1.4.0) (2024-11-30)
+
+
+### Features
+
+* precipitation display ([d341871](https://github.com/chilikla/yerushamayim-card/commit/d341871d3705dc45c3f7ae272bfdde7c0857aeb6))
+
 ## [1.3.20](https://github.com/chilikla/yerushamayim-card/compare/v1.3.19...v1.3.20) (2024-11-26)
 
 
