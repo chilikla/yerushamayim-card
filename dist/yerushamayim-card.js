@@ -191,11 +191,11 @@ class YerushamayimCard extends LitElement {
                   °C</bdi
                 >
               </div>
-              <div>
+              <div class="block">
                 <bdi>${this.statusState.attributes.forecast}</bdi>
               </div>
               ${Number(this.precipitationState.attributes.precipitation_probability) === 0
-              ? html`<div class="precipitation block">
+              ? html`<div class="precipitation">
                   <span>סיכוי לגשם: </span>
                   <bdi>${this.precipitationState.attributes.precipitation_probability}%</bdi>
                 </div>`
@@ -205,8 +205,8 @@ class YerushamayimCard extends LitElement {
           ${!this.config.hide_yesterday && this.lastDayState
             ? html`<div class="container-bottom" dir="rtl">
                 <div class="yesterday-container">
-                  <div>אתמול:</div>
                   <div class="yesterday-row" dir="rtl">
+                    <div class="block">אתמול:</div>
                     <div class="yesterday-temperature">
                       <div style="font-size: 24px;">
                         <span dir="rtl"> C°</span>
@@ -303,14 +303,14 @@ class YerushamayimCard extends LitElement {
       }
       img.logo {
         width: 50px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         filter: brightness(0) invert(1);
       }
       #right {
         flex-basis: 55%;
       }
       .block {
-        margin-bottom: 10px;
+        margin-bottom: 8px;
       }
       #current-temp {
         font-size: 24px;
@@ -321,7 +321,6 @@ class YerushamayimCard extends LitElement {
         margin-top: 16px;
       }
       .yesterday-row {
-        margin-top: 8px;
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
