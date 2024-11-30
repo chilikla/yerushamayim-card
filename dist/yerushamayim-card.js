@@ -194,7 +194,7 @@ class YerushamayimCard extends LitElement {
               <div>
                 <bdi>${this.statusState.attributes.forecast}</bdi>
               </div>
-              ${this.precipitationState.attributes.precipitation_probability === 0
+              ${Number(this.precipitationState.attributes.precipitation_probability) === 0
               ? html`<div class="precipitation block">
                   <span>סיכוי לגשם: </span>
                   <bdi>${this.precipitationState.attributes.precipitation_probability}%</bdi>
