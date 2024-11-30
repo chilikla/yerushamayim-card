@@ -19,7 +19,8 @@ const ENTITIES = {
   TEMPERATURE: SENSOR_BASE + "temperature",
   HUMIDITY: SENSOR_BASE + "humidity",
   STATUS: SENSOR_BASE + "status",
-  FORECAST: SENSOR_BASE + "forecast"
+  FORECAST: SENSOR_BASE + "forecast",
+  PRECIPITATION: SENSOR_BASE + "precipitation",
 };
 
 class YerushamayimCard extends LitElement {
@@ -55,6 +56,7 @@ class YerushamayimCard extends LitElement {
     this.temperatureState = this.hass.states[ENTITIES.TEMPERATURE];
     this.statusState = this.hass.states[ENTITIES.STATUS];
     this.forecastState = this.hass.states[ENTITIES.FORECAST];
+    this.precipitationState = this.hass.states[ENTITIES.PRECIPITATION];
     this.temperatureStateStr = this.temperatureState ? this.temperatureState.state : 'unavailable';
     this.logoUrl = this.hass.states['sun.sun'].state === 'below_horizon'
       ? 'https://www.02ws.co.il/img/logo_night.png'
@@ -85,7 +87,7 @@ class YerushamayimCard extends LitElement {
         this.lastDayState = {
           temperature: response[ENTITIES.TEMPERATURE][0].a.temperature,
           apparent_temperature: response[ENTITIES.TEMPERATURE][0].a.apparent_temperature,
-          day_icon: response[ENTITIES.STATUS][0].a.day_icon,
+          cloth_icon: response[ENTITIES.STATUS][0].a.cloth_icon,
           status: response[ENTITIES.STATUS][0].a.status
         };
       }
@@ -196,6 +198,12 @@ class YerushamayimCard extends LitElement {
               <div>
                 <bdi>${this.statusState.attributes.forecast}</bdi>
               </div>
+              ${this.precipitationState.attributes.precipitation_probability === 0
+              ? html`<div class="precipitation block">
+                  <span>סיכוי לגשם: </span>
+                  <bdi>${this.precipitationState.attributes.precipitation_probability}%</bdi>
+                </div>`
+              : html`<div />`}
             </div>
           </div>
           ${!this.config.hide_yesterday && this.lastDayState
@@ -209,7 +217,7 @@ class YerushamayimCard extends LitElement {
                         <span>${this.lastDayState.temperature}</span>
                       </div>
                       <div style="margin-top: 8px;">
-                        <span>מרגיש כמו:</span>
+                        <span>הרגיש כמו:</span>
                         <bdi class="yesterday">
                           ${this.lastDayState.apparent_temperature} °C
                         </bdi>
@@ -217,7 +225,7 @@ class YerushamayimCard extends LitElement {
                     </div>
                     <div class="yesterday-status">
                       <div>
-                        <img style="height: 30px;" src="${this.lastDayState.day_icon}" />
+                        <img style="height: 30px;" src="${this.lastDayState.cloth_icon}" />
                       </div>
                       <div>
                         ${this.lastDayState.status}
