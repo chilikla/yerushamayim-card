@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.5](https://github.com/chilikla/yerushamayim-card/compare/v1.4.4...v1.4.5) (2024-12-01)
+
+
+### Bug Fixes
+
+* precipitation line [#2](https://github.com/chilikla/yerushamayim-card/issues/2) ([e14b96b](https://github.com/chilikla/yerushamayim-card/commit/e14b96bcb4185758ef34bdb10c0c2bd6cbe283cc))
+
 ## [1.4.4](https://github.com/chilikla/yerushamayim-card/compare/v1.4.3...v1.4.4) (2024-12-01)
 
 
