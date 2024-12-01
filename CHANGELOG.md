@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.7](https://github.com/chilikla/yerushamayim-card/compare/v1.4.6...v1.4.7) (2024-12-01)
+
+
+### Bug Fixes
+
+* card layout ([4f95f3c](https://github.com/chilikla/yerushamayim-card/commit/4f95f3c9b097aeb6e72f83a7bfb3304470dad9b7))
+
 ## [1.4.6](https://github.com/chilikla/yerushamayim-card/compare/v1.4.5...v1.4.6) (2024-12-01)
 
 
