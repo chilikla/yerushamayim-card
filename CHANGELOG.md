@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.4](https://github.com/chilikla/yerushamayim-card/compare/v1.4.3...v1.4.4) (2024-12-01)
+
+
+### Bug Fixes
+
+* yesteraday line [#3](https://github.com/chilikla/yerushamayim-card/issues/3) ([0b937e5](https://github.com/chilikla/yerushamayim-card/commit/0b937e5a9610f9bd73539ed1a7d5995d2772d92b))
+
 ## [1.4.3](https://github.com/chilikla/yerushamayim-card/compare/v1.4.2...v1.4.3) (2024-11-30)
 
 
