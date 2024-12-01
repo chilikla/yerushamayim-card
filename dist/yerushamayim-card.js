@@ -270,7 +270,7 @@ class YerushamayimCard extends LitElement {
       #left {
         display: flex;
         flex-direction: column;
-        flex-basis: 45%;
+        flex-basis: 40%;
       }
       #status-container {
         min-height: 105px;
@@ -304,7 +304,7 @@ class YerushamayimCard extends LitElement {
         filter: brightness(0) invert(1);
       }
       #right {
-        flex-basis: 55%;
+        flex-basis: 60%;
       }
       .block {
         margin-bottom: 8px;
