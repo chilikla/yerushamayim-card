@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.6](https://github.com/chilikla/yerushamayim-card/compare/v1.4.5...v1.4.6) (2024-12-01)
+
+
+### Bug Fixes
+
+* hide_cloth ([f742f39](https://github.com/chilikla/yerushamayim-card/commit/f742f3913b348c53a98792f2054363d9247c6453))
+
 ## [1.4.5](https://github.com/chilikla/yerushamayim-card/compare/v1.4.4...v1.4.5) (2024-12-01)
 
 
