@@ -152,25 +152,22 @@ class YerushamayimCard extends LitElement {
                     >${this.forecastState.attributes.morning_temp} °C</bdi
                   >
                 </div>
-                <div class="forecast-icon">
-                  <img
-                    src="${this.forecastState.attributes
-            .night_cloth_icon}"
-                    title="${this.forecastState.attributes
-            .night_cloth_info}"
-                  />
-                  <img
-                    src="${this.forecastState.attributes.noon_cloth_icon}"
-                    title="${this.forecastState.attributes
-            .noon_cloth_info}"
-                  />
-                  <img
-                    src="${this.forecastState.attributes
-            .morning_cloth_icon}"
-                    title="${this.forecastState.attributes
-            .morning_cloth_info}"
-                  />
-                </div>
+                ${this.config.show_cloth
+                ? html`<div class="forecast-icon">
+                    <img
+                      src="${this.forecastState.attributes.night_cloth_icon}"
+                      title="${this.forecastState.attributes.night_cloth_info}"
+                    />
+                    <img
+                      src="${this.forecastState.attributes.noon_cloth_icon}"
+                      title="${this.forecastState.attributes.noon_cloth_info}"
+                    />
+                    <img
+                      src="${this.forecastState.attributes.morning_cloth_icon}"
+                      title="${this.forecastState.attributes.morning_cloth_info}"
+                    />
+                  </div>`
+                : html`<div />`}
               </div>
             </div>
             <div id="right" dir="rtl">
