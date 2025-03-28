@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.8](https://github.com/chilikla/yerushamayim-card/compare/v1.4.7...v1.4.8) (2025-03-28)
+
+
+### Bug Fixes
+
+* card doesn't load ([45a114c](https://github.com/chilikla/yerushamayim-card/commit/45a114cbba452e7b752f01e037c0fb922cc17fed))
+
 ## [1.4.7](https://github.com/chilikla/yerushamayim-card/compare/v1.4.6...v1.4.7) (2024-12-01)
 
 
