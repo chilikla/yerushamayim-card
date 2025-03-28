@@ -2,7 +2,7 @@ import {
   LitElement,
   html,
   css
-} from "https://unpkg.com/lit-element@3.3.3	/lit-element.js?module";
+} from "https://unpkg.com/lit-element@4.1.1/lit-element.js?module";
 
 function loadCSS(url) {
   const link = document.createElement("link");
