@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.9](https://github.com/chilikla/yerushamayim-card/compare/v1.4.8...v1.4.9) (2025-03-29)
+
+
+### Bug Fixes
+
+* update readme ([2d2160a](https://github.com/chilikla/yerushamayim-card/commit/2d2160aa0e95e360d82b3f429283d499f8814612))
+
 ## [1.4.8](https://github.com/chilikla/yerushamayim-card/compare/v1.4.7...v1.4.8) (2025-03-28)
 
 
