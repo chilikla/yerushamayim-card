@@ -7,7 +7,7 @@
 ![screenshot](https://raw.githubusercontent.com/chilikla/yerushamayim/main/screenshot.png)
 
 ### Instructions
-- Install the Unofficial Yerushamayim integration (`https://github.com/chilikla/yerushamayim`)
+- Install the [Unofficial Yerushamayim integration](https://github.com/chilikla/yerushamayim)
 - Add this repo to HACS' Custom repositories: `https://github.com/chilikla/yerushamayim-card`
 - Downalod plugin
 - Add card to dashboard
