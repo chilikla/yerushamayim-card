@@ -229,7 +229,7 @@ class YerushamayimCard extends LitElement {
                       </div>
                     </div>
                   </div>
-                </div
+                </div>
               </div>`
             : html`<div />`}
         `
@@ -244,6 +244,9 @@ class YerushamayimCard extends LitElement {
   }
 
   getCardSize() {
+    if (!this.config.hide_yesterday && this.lastDayState && Object.keys(this.lastDayState).length > 0) {
+      return 4; // Larger size when yesterday section is shown
+    }
     return 3;
   }
 
@@ -252,6 +255,12 @@ class YerushamayimCard extends LitElement {
       :host {
         font-family: "Rubik", "Open Sans", cursive;
       }
+      
+      ha-card {
+        height: 100%;
+        overflow: hidden;
+      }
+      
       .container {
         background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 100%);
         border-radius: var(--ha-card-border-radius, 12px);
@@ -263,14 +272,27 @@ class YerushamayimCard extends LitElement {
         );
         padding: 16px;
         font-size: 16px;
+        min-height: calc(100% - 32px);
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
       }
+      
       .container-top {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: flex-start;
         gap: 20px;
+        flex: 1;
       }
+      
+      .container-bottom {
+        margin-top: 16px;
+        /* FIXED: Prevent overflow */
+        flex-shrink: 0;
+      }
+      
       #left {
         display: flex;
         flex-direction: column;
@@ -319,26 +341,29 @@ class YerushamayimCard extends LitElement {
       .yesterday-container {
         display: flex;
         flex-direction: column;
-        margin-top: 16px;
       }
       .yesterday-row {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
+        gap: 16px;
       }
+      
       .yesterday-temperature {
-        height: 76px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-start;
+        min-height: fit-content;
+        flex: 1;
       }
       .yesterday-status {
-        height: 76px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: flex-end;
+        min-height: fit-content;
+        flex-shrink: 0;
       }
     `;
   }
