@@ -332,9 +332,7 @@ class YerushamayimCard extends LitElement {
       #right {
         flex-basis: 60%;
       }
-      .block {
-        margin-bottom: 8px;
-      }
+      .block { }
       #current-temp {
         font-size: 24px;
       }
