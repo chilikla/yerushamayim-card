@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.12](https://github.com/chilikla/yerushamayim-card/compare/v1.4.11...v1.4.12) (2025-05-30)
+
+
+### Bug Fixes
+
+* card height [#2](https://github.com/chilikla/yerushamayim-card/issues/2) ([164e287](https://github.com/chilikla/yerushamayim-card/commit/164e2870b5fa2ae03c5f6eb894775a9d37261e2f))
+
 ## [1.4.11](https://github.com/chilikla/yerushamayim-card/compare/v1.4.10...v1.4.11) (2025-05-30)
 
 
