@@ -2,6 +2,7 @@ import { terser } from 'rollup-plugin-terser';
 import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import images from '@rollup/plugin-image';
+import copy from 'rollup-plugin-copy';
 
 export default [
   {
@@ -34,5 +35,15 @@ export default [
       file: 'dist/yerushamayim-card.js',
     },
     external: ['https://unpkg.com/lit-element@2.0.1/lit-element.js?module']
+  },
+  {
+    plugins: [
+      copy({
+        targets: [
+          { src: 'src/assets/logo.png', dest: 'dist/assets' },
+          { src: 'src/assets/logo_night.png', dest: 'dist/assets' }
+        ]
+      })
+    ]
   }
 ];
