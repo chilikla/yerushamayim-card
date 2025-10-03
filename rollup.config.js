@@ -26,7 +26,13 @@ export default [
     plugins: [
       nodeResolve(),
       commonjs(),
-      images()
+      images(),
+      copy({
+        targets: [
+          { src: 'src/assets/logo.png', dest: 'dist/assets' },
+          { src: 'src/assets/logo_night.png', dest: 'dist/assets' }
+        ]
+      })
     ]
   },
   {
@@ -35,15 +41,5 @@ export default [
       file: 'dist/yerushamayim-card.js',
     },
     external: ['https://unpkg.com/lit-element@2.0.1/lit-element.js?module']
-  },
-  {
-    plugins: [
-      copy({
-        targets: [
-          { src: 'src/assets/logo.png', dest: 'dist/assets' },
-          { src: 'src/assets/logo_night.png', dest: 'dist/assets' }
-        ]
-      })
-    ]
   }
 ];
