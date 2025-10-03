@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.0...v1.5.1) (2025-10-03)
+
+
+### Bug Fixes
+
+* assets copying ([49d4a0f](https://github.com/chilikla/yerushamayim-card/commit/49d4a0f69c336d803947876947e4ef3683133d89))
+* assets copying [#2](https://github.com/chilikla/yerushamayim-card/issues/2) ([6d1435a](https://github.com/chilikla/yerushamayim-card/commit/6d1435a5b9e77d5c6323fe93a7ee26c12ea3828b))
+
 ## [1.5.0](https://github.com/chilikla/yerushamayim-card/compare/v1.4.12...v1.5.0) (2025-10-03)
 
 
