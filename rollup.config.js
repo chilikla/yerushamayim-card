@@ -29,8 +29,8 @@ export default [
       images(),
       copy({
         targets: [
-          { src: 'src/assets/logo.png', dest: 'dist/assets' },
-          { src: 'src/assets/logo_night.png', dest: 'dist/assets' }
+          { src: 'src/card/assets/logo.png', dest: 'dist/assets' },
+          { src: 'src/card/assets/logo_night.png', dest: 'dist/assets' }
         ]
       })
     ]
