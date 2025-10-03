@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/chilikla/yerushamayim-card/compare/v1.4.12...v1.5.0) (2025-10-03)
+
+
+### Features
+
+* update card for updated integration ([3d91db1](https://github.com/chilikla/yerushamayim-card/commit/3d91db1f2edbe3a197a3ae4610bce02da0ac8b2f))
+
 ## [1.4.12](https://github.com/chilikla/yerushamayim-card/compare/v1.4.11...v1.4.12) (2025-05-30)
 
 
