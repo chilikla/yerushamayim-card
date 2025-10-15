@@ -29,13 +29,29 @@ class YerushamayimCard extends LitElement {
       forecastState: { type: Object, state: true },
       temperatureStateStr: { type: String, state: true },
       logoUrl: { type: String, state: true },
-      lastDayState: { type: Object, state: true }
+      lastDayState: { type: Object, state: true },
+      _baseUrl: { type: String, state: true }
     };
   }
 
   constructor() {
     super();
     this.lastDayState = {};
+    // Get the base URL for assets relative to the card's JS file
+    this._baseUrl = this._getBaseUrl();
+  }
+
+  _getBaseUrl() {
+    // Find the script URL for this card
+    const scripts = document.getElementsByTagName('script');
+    for (let script of scripts) {
+      if (script.src && script.src.includes('yerushamayim-card')) {
+        // Extract the directory path
+        return script.src.substring(0, script.src.lastIndexOf('/'));
+      }
+    }
+    // Fallback: try to get from import.meta if available
+    return '';
   }
 
   // This will be called whenever hass updates
@@ -55,8 +71,8 @@ class YerushamayimCard extends LitElement {
     this.precipitationState = this.hass.states[ENTITIES.PRECIPITATION];
     this.temperatureStateStr = this.temperatureState ? this.temperatureState.state : 'unavailable';
     this.logoUrl = this.hass.states['sun.sun'].state === 'below_horizon'
-      ? 'https://www.02ws.co.il/img/logo_night.png'
-      : 'https://www.02ws.co.il/img/logo.png';
+      ? `${this._baseUrl}/assets/logo_night.png`
+      : `${this._baseUrl}/assets/logo.png`;
   }
 
   async firstUpdated() {
