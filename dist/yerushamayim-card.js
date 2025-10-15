@@ -134,13 +134,13 @@ class YerushamayimCard extends LitElement {
               <div>
                 <div class="forecast-icon">
                   <img
-                    src="https://www.02ws.co.il/img/night_icon_night.png"
+                    src="https://v2013.02ws.co.il/img/night_icon_night.png"
                   />
                   <img
-                    src="https://www.02ws.co.il/img/noon_icon_night.png"
+                    src="https://v2013.02ws.co.il/img/noon_icon_night.png"
                   />
                   <img
-                    src="https://www.02ws.co.il/img/morning_icon_night.png"
+                    src="https://v2013.02ws.co.il/img/morning_icon_night.png"
                   />
                 </div>
                 <div class="forecast-icon">
