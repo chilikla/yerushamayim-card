@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2-beta.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.1-beta.1...v1.5.2-beta.1) (2025-10-15)
+
+
+### Bug Fixes
+
+* forecast icons urls ([ebf1ebd](https://github.com/chilikla/yerushamayim-card/commit/ebf1ebd3a4e95398f2934be2efe7a0437625a48f))
+
 ## [1.5.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.0...v1.5.1) (2025-10-03)
 
 
