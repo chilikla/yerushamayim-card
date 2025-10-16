@@ -6,6 +6,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'commit dist') && !startsWith(github.event.head_commit.message, 'chore(main): release') && !startsWith(github.event.head_commit.message, 'chore(beta): release') && !startsWith(github.event.head_commit.message, 'chore: update version')"
     strategy:
       matrix:
         node-version: [20.x]
