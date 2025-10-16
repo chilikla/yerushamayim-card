@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.4-beta.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.3-beta.1...v1.5.4-beta.1) (2025-10-16)
+
+
+### Bug Fixes
+
+* double quotes ([47145b0](https://github.com/chilikla/yerushamayim-card/commit/47145b03d1b11c3b95ec65fd9df196ca94098ab6))
+
 ## [1.5.3-beta.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.2-beta.1...v1.5.3-beta.1) (2025-10-15)
 
 
