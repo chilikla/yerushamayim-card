@@ -33,18 +33,34 @@ class YerushamayimCard extends LitElement {
       forecastState: { type: Object, state: true },
       temperatureStateStr: { type: String, state: true },
       logoUrl: { type: String, state: true },
-      lastDayState: { type: Object, state: true }
+      lastDayState: { type: Object, state: true },
+      _baseUrl: { type: String, state: true }
     };
   }
 
   constructor() {
     super();
     this.lastDayState = {};
+    // Get the base URL for assets relative to the card's JS file
+    this._baseUrl = this._getBaseUrl();
+  }
+
+  _getBaseUrl() {
+    // Find the script URL for this card
+    const scripts = document.getElementsByTagName("script");
+    for (let script of scripts) {
+      if (script.src && script.src.includes("yerushamayim-card")) {
+        // Extract the directory path
+        return script.src.substring(0, script.src.lastIndexOf("/"));
+      }
+    }
+    // Fallback: try to get from import.meta if available
+    return "";
   }
 
   // This will be called whenever hass updates
   updated(changedProperties) {
-    if (changedProperties.has('hass')) {
+    if (changedProperties.has("hass")) {
       this.updateStates();
     }
   }
@@ -57,10 +73,10 @@ class YerushamayimCard extends LitElement {
     this.statusState = this.hass.states[ENTITIES.STATUS];
     this.forecastState = this.hass.states[ENTITIES.FORECAST];
     this.precipitationState = this.hass.states[ENTITIES.PRECIPITATION];
-    this.temperatureStateStr = this.temperatureState ? this.temperatureState.state : 'unavailable';
-    this.logoUrl = this.hass.states['sun.sun'].state === 'below_horizon'
-      ? 'https://www.02ws.co.il/img/logo_night.png'
-      : 'https://www.02ws.co.il/img/logo.png';
+    this.temperatureStateStr = this.temperatureState ? this.temperatureState.state : "unavailable";
+    this.logoUrl = this.hass.states["sun.sun"].state === "below_horizon"
+      ? `${this._baseUrl}/assets/logo_night.png`
+      : `${this._baseUrl}/assets/logo.png`;
   }
 
   async firstUpdated() {
@@ -92,7 +108,7 @@ class YerushamayimCard extends LitElement {
         };
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   }
 
@@ -100,7 +116,7 @@ class YerushamayimCard extends LitElement {
     if (this.hass) {
       const domain = "yerushamayim";
       window.history.pushState(null, "", `/config/entities?historyBack=1&domain=${domain}`);
-      const event = new Event('location-changed', {
+      const event = new Event("location-changed", {
         bubbles: true,
         composed: true
       });
@@ -116,7 +132,7 @@ class YerushamayimCard extends LitElement {
     return html`
       <ha-card @click="${this.handleClick}" style="cursor: pointer;">
         <div class="container">
-        ${(this.temperatureStateStr !== 'unavailable' && this.temperatureState.attributes.temperature !== null)
+        ${(this.temperatureStateStr !== "unavailable" && this.temperatureState.attributes.temperature !== null)
         ? html`
           <div class="container-top">
             <div id="left">
@@ -138,13 +154,13 @@ class YerushamayimCard extends LitElement {
               <div>
                 <div class="forecast-icon">
                   <img
-                    src="https://www.02ws.co.il/img/night_icon_night.png"
+                    src="https://v2013.02ws.co.il/img/night_icon_night.png"
                   />
                   <img
-                    src="https://www.02ws.co.il/img/noon_icon_night.png"
+                    src="https://v2013.02ws.co.il/img/noon_icon_night.png"
                   />
                   <img
-                    src="https://www.02ws.co.il/img/morning_icon_night.png"
+                    src="https://v2013.02ws.co.il/img/morning_icon_night.png"
                   />
                 </div>
                 <div class="forecast-icon">
@@ -367,7 +383,7 @@ class YerushamayimCard extends LitElement {
   }
 }
 
-customElements.define('yerushamayim-card', YerushamayimCard);
+customElements.define("yerushamayim-card", YerushamayimCard);
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: "yerushamayim-card",
