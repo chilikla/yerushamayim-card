@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.3](https://github.com/chilikla/yerushamayim-card/compare/v1.5.2...v1.5.3) (2025-10-19)
+
+
+### Bug Fixes
+
+* adjust card to multiple forecast sensors ([#54](https://github.com/chilikla/yerushamayim-card/issues/54)) ([c5cee1f](https://github.com/chilikla/yerushamayim-card/commit/c5cee1f3c6b603466eff291ee6340ae37f801df7))
+
 ## [1.5.2](https://github.com/chilikla/yerushamayim-card/compare/v1.5.1...v1.5.2) (2025-10-19)
 
 

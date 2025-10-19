@@ -1,6 +1,6 @@
 {
   "name": "yerushamayim-card",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Unofficial Yerushamayim Home Assistant dashboard card for the unofficial Yerushamayim integration",
   "main": "yerushamayim-card.js",
   "scripts": {
