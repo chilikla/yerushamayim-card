@@ -15,7 +15,7 @@ const ENTITIES = {
   TEMPERATURE: SENSOR_BASE + "temperature",
   HUMIDITY: SENSOR_BASE + "humidity",
   STATUS: SENSOR_BASE + "status",
-  FORECAST: SENSOR_BASE + "forecast",
+  FORECAST: SENSOR_BASE + "forecast_day_1",
   PRECIPITATION: SENSOR_BASE + "precipitation",
 };
 
@@ -205,7 +205,7 @@ class YerushamayimCard extends LitElement {
                 >
               </div>
               <div class="block">
-                <bdi>${this.statusState.attributes.forecast}</bdi>
+                <bdi>${this.forecastState.attributes.status}</bdi>
               </div>
               ${Number(this.precipitationState.attributes.precipitation_probability) > 0
               ? html`<div class="precipitation">
