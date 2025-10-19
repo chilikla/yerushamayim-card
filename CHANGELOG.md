@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.2](https://github.com/chilikla/yerushamayim-card/compare/v1.5.1...v1.5.2) (2025-10-19)
+
+
+### Bug Fixes
+
+* show logos ([#52](https://github.com/chilikla/yerushamayim-card/issues/52)) ([b1cd560](https://github.com/chilikla/yerushamayim-card/commit/b1cd5607d5a07a8b5cce185a86ca396dd66069c0))
+
 ## [1.5.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.0...v1.5.1) (2025-10-03)
 
 
