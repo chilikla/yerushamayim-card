@@ -1,19 +1,5 @@
 # Changelog
 
-## [1.5.3-beta.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.2-beta.1...v1.5.3-beta.1) (2025-10-15)
-
-
-### Bug Fixes
-
-* 02ws logos ([25aee3c](https://github.com/chilikla/yerushamayim-card/commit/25aee3c7f9d0e6818bd5347fb414aba48836bac9))
-
-## [1.5.2-beta.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.1-beta.1...v1.5.2-beta.1) (2025-10-15)
-
-
-### Bug Fixes
-
-* forecast icons urls ([ebf1ebd](https://github.com/chilikla/yerushamayim-card/commit/ebf1ebd3a4e95398f2934be2efe7a0437625a48f))
-
 ## [1.5.1](https://github.com/chilikla/yerushamayim-card/compare/v1.5.0...v1.5.1) (2025-10-03)
 
 
