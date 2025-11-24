@@ -320,6 +320,10 @@ class YerushamayimCard extends LitElement {
       #icon-info {
         text-align: left;
         margin-bottom: 15px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
       }
       #forecast-icons {
         display: flex;
@@ -344,7 +348,11 @@ class YerushamayimCard extends LitElement {
       #right {
         flex-basis: 60%;
       }
-      .block { }
+      .block {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+      }
       #current-temp {
         font-size: 24px;
       }
@@ -374,6 +382,9 @@ class YerushamayimCard extends LitElement {
         align-items: flex-end;
         min-height: fit-content;
         flex-shrink: 0;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
     `;
   }
