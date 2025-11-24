@@ -150,6 +150,10 @@ class YerushamayimCard extends LitElement {
       #icon-info {
         text-align: left;
         margin-bottom: 15px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
       }
       #forecast-icons {
         display: flex;
@@ -176,6 +180,9 @@ class YerushamayimCard extends LitElement {
       }
       .block {
         margin-bottom: 10px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-word;
       }
       #current-temp {
         font-size: 24px;
