@@ -3,6 +3,7 @@ import {
   html,
   css
 } from "https://unpkg.com/lit-element@4.1.1/lit-element.js?module";
+import "./yerushamayim-card-editor.js";
 
 function loadCSS(url) {
   const link = document.createElement("link");
@@ -34,13 +35,17 @@ class YerushamayimCard extends LitElement {
       temperatureStateStr: { type: String, state: true },
       logoUrl: { type: String, state: true },
       lastDayState: { type: Object, state: true },
-      _baseUrl: { type: String, state: true }
+      _baseUrl: { type: String, state: true },
+      _forecastExpanded: { type: Boolean, state: true },
+      _forecastStates: { type: Array, state: true }
     };
   }
 
   constructor() {
     super();
     this.lastDayState = {};
+    this._forecastExpanded = false;
+    this._forecastStates = [];
     // Get the base URL for assets relative to the card's JS file
     this._baseUrl = this._getBaseUrl();
   }
@@ -77,6 +82,29 @@ class YerushamayimCard extends LitElement {
     this.logoUrl = this.hass.states["sun.sun"].state === "below_horizon"
       ? `${this._baseUrl}/assets/logo_night.png`
       : `${this._baseUrl}/assets/logo.png`;
+
+    // Update forecast states if forecast is enabled
+    if (this.config.show_forecast) {
+      this._updateForecastStates();
+    }
+  }
+
+  _updateForecastStates() {
+    const days = this.config.forecast_days || 3;
+    this._forecastStates = [];
+
+    for (let i = 1; i <= days; i++) {
+      const entityId = `${SENSOR_BASE}forecast_day_${i}`;
+      const state = this.hass.states[entityId];
+      if (state) {
+        this._forecastStates.push(state);
+      }
+    }
+  }
+
+  _toggleForecast(e) {
+    e.stopPropagation();
+    this._forecastExpanded = !this._forecastExpanded;
   }
 
   async firstUpdated() {
@@ -124,6 +152,19 @@ class YerushamayimCard extends LitElement {
     }
   }
 
+  _getBackgroundStyle() {
+    const style = this.config.background_style || 'gradient';
+    switch (style) {
+      case 'transparent':
+        return 'background: transparent;';
+      case 'default':
+        return 'background: var(--ha-card-background, var(--card-background-color, white));';
+      case 'gradient':
+      default:
+        return 'background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 100%);';
+    }
+  }
+
   render() {
     if (!this.hass || !this.temperatureState) {
       return html`<ha-card><div class="container">Loading...</div></ha-card>`;
@@ -131,7 +172,7 @@ class YerushamayimCard extends LitElement {
 
     return html`
       <ha-card @click="${this.handleClick}" style="cursor: pointer;">
-        <div class="container">
+        <div class="container" style="${this._getBackgroundStyle()}">
         ${(this.temperatureStateStr !== "unavailable" && this.temperatureState.attributes.temperature !== null)
         ? html`
           <div class="container-top">
@@ -208,7 +249,7 @@ class YerushamayimCard extends LitElement {
                   °C</bdi
                 >
               </div>
-              <div class="block">
+              <div class="block status" title="${this.forecastState.attributes.status}">
                 <bdi>${this.forecastState.attributes.status}</bdi>
               </div>
               ${Number(this.precipitationState.attributes.precipitation_probability) > 0
@@ -248,6 +289,57 @@ class YerushamayimCard extends LitElement {
                 </div>
               </div>`
             : html`<div />`}
+          ${this.config.show_forecast
+            ? html`<div class="forecast-section">
+                <div class="forecast-toggle" @click="${this._toggleForecast}">
+                  <span>תחזית ${this.config.forecast_days || 3} ימים</span>
+                  <ha-icon
+                    icon="${this._forecastExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}"
+                  ></ha-icon>
+                </div>
+                ${this._forecastExpanded
+                  ? html`<div class="forecast-days">
+                      ${this._forecastStates.map((forecast, index) => html`
+                        <div class="forecast-day" dir="rtl">
+                          <div class="forecast-day-header">
+                            <strong>${forecast.attributes.day_name || `יום ${index + 1}`}</strong>
+                            <span class="forecast-day-date">${forecast.attributes.date || ''}</span>
+                          </div>
+                          <div class="forecast-day-content">
+                            <div class="forecast-temps">
+                              <div class="forecast-temp-item">
+                                <img src="https://v2013.02ws.co.il/img/morning_icon_night.png" />
+                                <span>${forecast.attributes.morning_temp}°C</span>
+                              </div>
+                              <div class="forecast-temp-item">
+                                <img src="https://v2013.02ws.co.il/img/noon_icon_night.png" />
+                                <span>${forecast.attributes.noon_temp}°C</span>
+                              </div>
+                              <div class="forecast-temp-item">
+                                <img src="https://v2013.02ws.co.il/img/night_icon_night.png" />
+                                <span>${forecast.attributes.night_temp}°C</span>
+                              </div>
+                            </div>
+                            ${this.config.show_cloth
+                              ? html`<div class="forecast-cloth">
+                                  <img src="${forecast.attributes.morning_cloth_icon}"
+                                       title="${forecast.attributes.morning_cloth_info}" />
+                                  <img src="${forecast.attributes.noon_cloth_icon}"
+                                       title="${forecast.attributes.noon_cloth_info}" />
+                                  <img src="${forecast.attributes.night_cloth_icon}"
+                                       title="${forecast.attributes.night_cloth_info}" />
+                                </div>`
+                              : ''}
+                            <div class="forecast-status">
+                              ${forecast.attributes.status || ''}
+                            </div>
+                          </div>
+                        </div>
+                      `)}
+                    </div>`
+                  : ''}
+              </div>`
+            : ''}
         `
         : html`No data to show`}
     </div>
@@ -256,7 +348,14 @@ class YerushamayimCard extends LitElement {
   }
 
   setConfig(config) {
-    this.config = config;
+    this.config = {
+      hide_yesterday: false,
+      show_cloth: false,
+      background_style: 'gradient',
+      show_forecast: false,
+      forecast_days: 3,
+      ...config
+    };
   }
 
   getCardSize() {
@@ -264,6 +363,20 @@ class YerushamayimCard extends LitElement {
       return 4; // Larger size when yesterday section is shown
     }
     return 3;
+  }
+
+  static getConfigElement() {
+    return document.createElement("yerushamayim-card-editor");
+  }
+
+  static getStubConfig() {
+    return {
+      hide_yesterday: false,
+      show_cloth: false,
+      background_style: 'gradient',
+      show_forecast: false,
+      forecast_days: 3
+    };
   }
 
   static get styles() {
@@ -278,7 +391,6 @@ class YerushamayimCard extends LitElement {
       }
       
       .container {
-        background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 100%);
         border-radius: var(--ha-card-border-radius, 12px);
         box-shadow: var(
           --ha-card-box-shadow,
@@ -352,6 +464,14 @@ class YerushamayimCard extends LitElement {
       #current-temp {
         font-size: 24px;
       }
+      .today-status {
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Limit to 3 lines */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.3;
+      }
       .yesterday-container {
         display: flex;
         flex-direction: column;
@@ -378,6 +498,112 @@ class YerushamayimCard extends LitElement {
         align-items: flex-end;
         min-height: fit-content;
         flex-shrink: 0;
+      }
+
+      .forecast-section {
+        margin-top: 16px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        padding-top: 12px;
+      }
+
+      .forecast-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 8px;
+        transition: background-color 0.2s;
+      }
+
+      .forecast-toggle:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .forecast-toggle span {
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      .forecast-days {
+        margin-top: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .forecast-day {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .forecast-day-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+
+      .forecast-day-header strong {
+        font-size: 15px;
+      }
+
+      .forecast-day-date {
+        font-size: 13px;
+        opacity: 0.8;
+      }
+
+      .forecast-day-content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .forecast-temps {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .forecast-temp-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        flex: 1;
+      }
+
+      .forecast-temp-item img {
+        height: 24px;
+        width: 24px;
+      }
+
+      .forecast-temp-item span {
+        font-size: 14px;
+      }
+
+      .forecast-cloth {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 8px;
+        margin-top: 4px;
+      }
+
+      .forecast-cloth img {
+        height: 24px;
+        width: 24px;
+      }
+
+      .forecast-status {
+        font-size: 13px;
+        text-align: center;
+        margin-top: 4px;
+        opacity: 0.9;
       }
     `;
   }
