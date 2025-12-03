@@ -379,7 +379,8 @@ class YerushamayimCard extends LitElement {
                           ? html`<div>
                                 <img
                                   class="icon"
-                                  src="${this.statusState.attributes.cloth_icon}"
+                                  src="${this.statusState.attributes
+                                    .cloth_icon}"
                                   title="${this.statusState.attributes
                                     .cloth_info}"
                                 />
@@ -405,9 +406,12 @@ class YerushamayimCard extends LitElement {
                           <bdi
                             >${this.forecastState.attributes.night_temp} °C</bdi
                           >
-                          <bdi>${this.forecastState.attributes.noon_temp} °C</bdi>
                           <bdi
-                            >${this.forecastState.attributes.morning_temp} °C</bdi
+                            >${this.forecastState.attributes.noon_temp} °C</bdi
+                          >
+                          <bdi
+                            >${this.forecastState.attributes.morning_temp}
+                            °C</bdi
                           >
                         </div>
                         ${this.config.show_cloth
@@ -435,7 +439,10 @@ class YerushamayimCard extends LitElement {
                       </div>
                     </div>
                     ${!this.config.hide_yesterday && this.lastDayState
-                      ? html`<div class="column-section yesterday-section" dir="rtl">
+                      ? html`<div
+                          class="column-section yesterday-section"
+                          dir="rtl"
+                        >
                           <div class="yesterday-icon-container">
                             <img
                               class="yesterday-icon"
@@ -464,7 +471,8 @@ class YerushamayimCard extends LitElement {
                       <div class="block">
                         <span>מרגיש כמו: </span>
                         <bdi
-                          >${this.temperatureState.attributes.apparent_temperature
+                          >${this.temperatureState.attributes
+                            .apparent_temperature
                             ? this.temperatureState.attributes
                                 .apparent_temperature
                             : this.temperatureState.attributes.temperature}
@@ -491,7 +499,10 @@ class YerushamayimCard extends LitElement {
                         : html`<div />`}
                     </div>
                     ${!this.config.hide_yesterday && this.lastDayState
-                      ? html`<div class="column-section yesterday-section" dir="rtl">
+                      ? html`<div
+                          class="column-section yesterday-section"
+                          dir="rtl"
+                        >
                           <div class="yesterday-label">אתמול:</div>
                           <div class="yesterday-temp">
                             <span dir="rtl"> C°</span>
