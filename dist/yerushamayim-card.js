@@ -224,7 +224,7 @@ class YerushamayimCard extends LitElement {
       lastDayState: { type: Object, state: true },
       _baseUrl: { type: String, state: true },
       _forecastExpanded: { type: Boolean, state: true },
-      _forecastStates: { type: Array, state: true }
+      _forecastStates: { type: Array, state: true },
     };
   }
 
@@ -265,10 +265,13 @@ class YerushamayimCard extends LitElement {
     this.statusState = this.hass.states[ENTITIES.STATUS];
     this.forecastState = this.hass.states[ENTITIES.FORECAST];
     this.precipitationState = this.hass.states[ENTITIES.PRECIPITATION];
-    this.temperatureStateStr = this.temperatureState ? this.temperatureState.state : "unavailable";
-    this.logoUrl = this.hass.states["sun.sun"].state === "below_horizon"
-      ? `${this._baseUrl}/assets/logo_night.png`
-      : `${this._baseUrl}/assets/logo.png`;
+    this.temperatureStateStr = this.temperatureState
+      ? this.temperatureState.state
+      : "unavailable";
+    this.logoUrl =
+      this.hass.states["sun.sun"].state === "below_horizon"
+        ? `${this._baseUrl}/assets/logo_night.png`
+        : `${this._baseUrl}/assets/logo.png`;
 
     // Update forecast states if forecast is enabled
     if (this.config.show_forecast) {
@@ -307,19 +310,20 @@ class YerushamayimCard extends LitElement {
       yesterday.setDate(yesterday.getDate() - 1);
 
       const response = await this.hass.callWS({
-        "id": 1,
-        "type": "history/history_during_period",
-        "start_time": yesterday.toISOString(),
-        "end_time": now.toISOString(),
-        "entity_ids": [ENTITIES.TEMPERATURE, ENTITIES.STATUS]
+        id: 1,
+        type: "history/history_during_period",
+        start_time: yesterday.toISOString(),
+        end_time: now.toISOString(),
+        entity_ids: [ENTITIES.TEMPERATURE, ENTITIES.STATUS],
       });
 
       if (response && response[ENTITIES.TEMPERATURE]?.[0]?.a) {
         this.lastDayState = {
           temperature: response[ENTITIES.TEMPERATURE][0].a.temperature,
-          apparent_temperature: response[ENTITIES.TEMPERATURE][0].a.apparent_temperature,
+          apparent_temperature:
+            response[ENTITIES.TEMPERATURE][0].a.apparent_temperature,
           cloth_icon: response[ENTITIES.STATUS][0].a.cloth_icon,
-          status: response[ENTITIES.STATUS][0].a.status
+          status: response[ENTITIES.STATUS][0].a.status,
         };
       }
     } catch (error) {
@@ -330,25 +334,29 @@ class YerushamayimCard extends LitElement {
   handleClick() {
     if (this.hass) {
       const domain = "yerushamayim";
-      window.history.pushState(null, "", `/config/entities?historyBack=1&domain=${domain}`);
+      window.history.pushState(
+        null,
+        "",
+        `/config/entities?historyBack=1&domain=${domain}`
+      );
       const event = new Event("location-changed", {
         bubbles: true,
-        composed: true
+        composed: true,
       });
       window.dispatchEvent(event);
     }
   }
 
   _getBackgroundStyle() {
-    const style = this.config.background_style || 'gradient';
+    const style = this.config.background_style || "gradient";
     switch (style) {
-      case 'transparent':
-        return 'background: transparent;';
-      case 'default':
-        return 'background: var(--ha-card-background, var(--card-background-color, white));';
-      case 'gradient':
+      case "transparent":
+        return "background: transparent;";
+      case "default":
+        return "background: var(--ha-card-background, var(--card-background-color, white));";
+      case "gradient":
       default:
-        return 'background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 100%);';
+        return "background: linear-gradient(180deg, #3b4d5b 0%, #5e6d97 100%);";
     }
   }
 
@@ -360,193 +368,260 @@ class YerushamayimCard extends LitElement {
     return html`
       <ha-card @click="${this.handleClick}" style="cursor: pointer;">
         <div class="container" style="${this._getBackgroundStyle()}">
-        ${(this.temperatureStateStr !== "unavailable" && this.temperatureState.attributes.temperature !== null)
-        ? html`
-          <div class="container-top">
-            <div id="left">
-              <div id="status-container">
-                ${this.statusState.attributes.cloth_icon
-            ? html`<div>
-                        <img
-                          class="icon"
-                          src="${this.statusState.attributes.cloth_icon}"
-                          title="${this.statusState.attributes
-                .cloth_info}"
-                        />
-                      </div>
-                      <div id="icon-info" dir="rtl">
-                        <bdi>${this.statusState.attributes.status}</bdi>
-                      </div> `
-            : html``}
-              </div>
-              <div>
-                <div class="forecast-icon">
-                  <img
-                    src="https://v2013.02ws.co.il/img/night_icon_night.png"
-                  />
-                  <img
-                    src="https://v2013.02ws.co.il/img/noon_icon_night.png"
-                  />
-                  <img
-                    src="https://v2013.02ws.co.il/img/morning_icon_night.png"
-                  />
+          ${this.temperatureStateStr !== "unavailable" &&
+          this.temperatureState.attributes.temperature !== null
+            ? html`
+                <div class="logo-header">
+                  <img class="logo" src="${this.logoUrl}" />
                 </div>
-                <div class="forecast-icon">
-                  <bdi
-                    >${this.forecastState.attributes.night_temp} °C</bdi
-                  >
-                  <bdi>${this.forecastState.attributes.noon_temp} °C</bdi>
-                  <bdi
-                    >${this.forecastState.attributes.morning_temp} °C</bdi
-                  >
-                </div>
-                ${this.config.show_cloth
-                ? html`<div class="forecast-icon">
-                    <img
-                      src="${this.forecastState.attributes.night_cloth_icon}"
-                      title="${this.forecastState.attributes.night_cloth_info}"
-                    />
-                    <img
-                      src="${this.forecastState.attributes.noon_cloth_icon}"
-                      title="${this.forecastState.attributes.noon_cloth_info}"
-                    />
-                    <img
-                      src="${this.forecastState.attributes.morning_cloth_icon}"
-                      title="${this.forecastState.attributes.morning_cloth_info}"
-                    />
-                  </div>`
-                : html`<div />`}
-              </div>
-            </div>
-            <div id="right" dir="rtl">
-              <img class="logo" src="${this.logoUrl}" />
-              <div class="block" id="current-temp">
-                <bdi>
-                  ${this.temperatureState.attributes.temperature}
-                  <span>°C </span>
-                </bdi>
-              </div>
-              <div class="block">
-                <span>מרגיש כמו: </span>
-                <bdi
-                  >${this.temperatureState.attributes.apparent_temperature
-            ? this.temperatureState.attributes
-              .apparent_temperature
-            : this.temperatureState.attributes.temperature}
-                  °C</bdi
-                >
-              </div>
-              <div class="block status" title="${this.forecastState.attributes.status}">
-                <bdi>${this.forecastState.attributes.status}</bdi>
-              </div>
-              ${Number(this.precipitationState.attributes.precipitation_probability) > 0
-              ? html`<div class="precipitation">
-                  <span>סיכוי לגשם: </span>
-                  <bdi>${this.precipitationState.attributes.precipitation_probability}%</bdi>
-                </div>`
-              : html`<div />`}
-            </div>
-          </div>
-          ${!this.config.hide_yesterday && this.lastDayState
-            ? html`<div class="container-bottom" dir="rtl">
-                <div class="yesterday-container">
-                  <div class="yesterday-row" dir="rtl">
-                    <div class="yesterday-temperature">
-                      <div class="block">אתמול:</div>
-                      <div style="font-size: 24px;" class="block">
-                        <span dir="rtl"> C°</span>
-                        <span>${this.lastDayState.temperature}</span>
+                <div class="columns-container">
+                  <div class="column left-column">
+                    <div class="column-section">
+                      <div id="status-container">
+                        ${this.statusState.attributes.cloth_icon
+                          ? html`<div>
+                                <img
+                                  class="icon"
+                                  src="${this.statusState.attributes.cloth_icon}"
+                                  title="${this.statusState.attributes
+                                    .cloth_info}"
+                                />
+                              </div>
+                              <div id="icon-info" dir="rtl">
+                                <bdi>${this.statusState.attributes.status}</bdi>
+                              </div> `
+                          : html``}
                       </div>
                       <div>
-                        <span>הרגיש כמו:</span>
-                        <bdi class="yesterday">
-                          ${this.lastDayState.apparent_temperature} °C
+                        <div class="forecast-icon">
+                          <img
+                            src="https://v2013.02ws.co.il/img/night_icon_night.png"
+                          />
+                          <img
+                            src="https://v2013.02ws.co.il/img/noon_icon_night.png"
+                          />
+                          <img
+                            src="https://v2013.02ws.co.il/img/morning_icon_night.png"
+                          />
+                        </div>
+                        <div class="forecast-icon">
+                          <bdi
+                            >${this.forecastState.attributes.night_temp} °C</bdi
+                          >
+                          <bdi>${this.forecastState.attributes.noon_temp} °C</bdi>
+                          <bdi
+                            >${this.forecastState.attributes.morning_temp} °C</bdi
+                          >
+                        </div>
+                        ${this.config.show_cloth
+                          ? html`<div class="forecast-icon">
+                              <img
+                                src="${this.forecastState.attributes
+                                  .night_cloth_icon}"
+                                title="${this.forecastState.attributes
+                                  .night_cloth_info}"
+                              />
+                              <img
+                                src="${this.forecastState.attributes
+                                  .noon_cloth_icon}"
+                                title="${this.forecastState.attributes
+                                  .noon_cloth_info}"
+                              />
+                              <img
+                                src="${this.forecastState.attributes
+                                  .morning_cloth_icon}"
+                                title="${this.forecastState.attributes
+                                  .morning_cloth_info}"
+                              />
+                            </div>`
+                          : html`<div />`}
+                      </div>
+                    </div>
+                    ${!this.config.hide_yesterday && this.lastDayState
+                      ? html`<div class="column-section yesterday-section" dir="rtl">
+                          <div class="yesterday-label">אתמול:</div>
+                          <div class="yesterday-temp">
+                            <span dir="rtl"> C°</span>
+                            <span>${this.lastDayState.temperature}</span>
+                          </div>
+                          <div class="yesterday-feels">
+                            <span>הרגיש כמו:</span>
+                            <bdi>
+                              ${this.lastDayState.apparent_temperature} °C
+                            </bdi>
+                          </div>
+                        </div>`
+                      : html`<div />`}
+                  </div>
+
+                  <div class="column right-column" dir="rtl">
+                    <div class="column-section">
+                      <div class="block" id="current-temp">
+                        <bdi>
+                          ${this.temperatureState.attributes.temperature}
+                          <span>°C </span>
                         </bdi>
                       </div>
-                    </div>
-                    <div class="yesterday-status">
-                      <div>
-                        <img style="height: 30px; padding-block: 8px;" src="${this.lastDayState.cloth_icon}" />
+                      <div class="block">
+                        <span>מרגיש כמו: </span>
+                        <bdi
+                          >${this.temperatureState.attributes.apparent_temperature
+                            ? this.temperatureState.attributes
+                                .apparent_temperature
+                            : this.temperatureState.attributes.temperature}
+                          °C</bdi
+                        >
                       </div>
-                      <div>
-                        ${this.lastDayState.status}
+                      <div
+                        class="block today-status"
+                        title="${this.forecastState.attributes.status}"
+                      >
+                        <bdi>${this.forecastState.attributes.status}</bdi>
                       </div>
+                      ${Number(
+                        this.precipitationState.attributes
+                          .precipitation_probability
+                      ) > 0
+                        ? html`<div class="precipitation">
+                            <span>סיכוי לגשם: </span>
+                            <bdi
+                              >${this.precipitationState.attributes
+                                .precipitation_probability}%</bdi
+                            >
+                          </div>`
+                        : html`<div />`}
                     </div>
+                    ${!this.config.hide_yesterday && this.lastDayState
+                      ? html`<div class="column-section yesterday-section" dir="rtl">
+                          <div class="yesterday-icon-container">
+                            <img
+                              class="yesterday-icon"
+                              src="${this.lastDayState.cloth_icon}"
+                            />
+                          </div>
+                          <div class="yesterday-status-text">
+                            ${this.lastDayState.status}
+                          </div>
+                        </div>`
+                      : html`<div />`}
                   </div>
                 </div>
-              </div>`
-            : html`<div />`}
-          ${this.config.show_forecast
-            ? html`<div class="forecast-section">
-                <div class="forecast-toggle" @click="${this._toggleForecast}">
-                  <span>תחזית ${this.config.forecast_days || 3} ימים</span>
-                  <ha-icon
-                    icon="${this._forecastExpanded ? 'mdi:chevron-up' : 'mdi:chevron-down'}"
-                  ></ha-icon>
-                </div>
-                ${this._forecastExpanded
-                  ? html`<div class="forecast-days">
-                      ${this._forecastStates.map((forecast, index) => html`
-                        <div class="forecast-day" dir="rtl">
-                          <div class="forecast-day-header">
-                            <strong>${forecast.attributes.day_name || `יום ${index + 1}`}</strong>
-                            <span class="forecast-day-date">${forecast.attributes.date || ''}</span>
-                          </div>
-                          <div class="forecast-day-content">
-                            <div class="forecast-temps">
-                              <div class="forecast-temp-item">
-                                <img src="https://v2013.02ws.co.il/img/morning_icon_night.png" />
-                                <span>${forecast.attributes.morning_temp}°C</span>
-                              </div>
-                              <div class="forecast-temp-item">
-                                <img src="https://v2013.02ws.co.il/img/noon_icon_night.png" />
-                                <span>${forecast.attributes.noon_temp}°C</span>
-                              </div>
-                              <div class="forecast-temp-item">
-                                <img src="https://v2013.02ws.co.il/img/night_icon_night.png" />
-                                <span>${forecast.attributes.night_temp}°C</span>
-                              </div>
-                            </div>
-                            ${this.config.show_cloth
-                              ? html`<div class="forecast-cloth">
-                                  <img src="${forecast.attributes.morning_cloth_icon}"
-                                       title="${forecast.attributes.morning_cloth_info}" />
-                                  <img src="${forecast.attributes.noon_cloth_icon}"
-                                       title="${forecast.attributes.noon_cloth_info}" />
-                                  <img src="${forecast.attributes.night_cloth_icon}"
-                                       title="${forecast.attributes.night_cloth_info}" />
-                                </div>`
-                              : ''}
-                            <div class="forecast-status">
-                              ${forecast.attributes.status || ''}
-                            </div>
-                          </div>
-                        </div>
-                      `)}
+                ${this.config.show_forecast
+                  ? html`<div class="forecast-section">
+                      <div
+                        class="forecast-toggle"
+                        @click="${this._toggleForecast}"
+                      >
+                        <span
+                          >תחזית ${this.config.forecast_days || 3} ימים</span
+                        >
+                        <ha-icon
+                          icon="${this._forecastExpanded
+                            ? "mdi:chevron-up"
+                            : "mdi:chevron-down"}"
+                        ></ha-icon>
+                      </div>
+                      ${this._forecastExpanded
+                        ? html`<div class="forecast-days">
+                            ${this._forecastStates.map(
+                              (forecast, index) => html`
+                                <div class="forecast-day" dir="rtl">
+                                  <div class="forecast-day-header">
+                                    <strong
+                                      >${forecast.attributes.day_name ||
+                                      `יום ${index + 1}`}</strong
+                                    >
+                                    <span class="forecast-day-date"
+                                      >${forecast.attributes.date || ""}</span
+                                    >
+                                  </div>
+                                  <div class="forecast-day-content">
+                                    <div class="forecast-temps">
+                                      <div class="forecast-temp-item">
+                                        <img
+                                          src="https://v2013.02ws.co.il/img/morning_icon_night.png"
+                                        />
+                                        <span
+                                          >${forecast.attributes
+                                            .morning_temp}°C</span
+                                        >
+                                      </div>
+                                      <div class="forecast-temp-item">
+                                        <img
+                                          src="https://v2013.02ws.co.il/img/noon_icon_night.png"
+                                        />
+                                        <span
+                                          >${forecast.attributes
+                                            .noon_temp}°C</span
+                                        >
+                                      </div>
+                                      <div class="forecast-temp-item">
+                                        <img
+                                          src="https://v2013.02ws.co.il/img/night_icon_night.png"
+                                        />
+                                        <span
+                                          >${forecast.attributes
+                                            .night_temp}°C</span
+                                        >
+                                      </div>
+                                    </div>
+                                    ${this.config.show_cloth
+                                      ? html`<div class="forecast-cloth">
+                                          <img
+                                            src="${forecast.attributes
+                                              .morning_cloth_icon}"
+                                            title="${forecast.attributes
+                                              .morning_cloth_info}"
+                                          />
+                                          <img
+                                            src="${forecast.attributes
+                                              .noon_cloth_icon}"
+                                            title="${forecast.attributes
+                                              .noon_cloth_info}"
+                                          />
+                                          <img
+                                            src="${forecast.attributes
+                                              .night_cloth_icon}"
+                                            title="${forecast.attributes
+                                              .night_cloth_info}"
+                                          />
+                                        </div>`
+                                      : ""}
+                                    <div class="forecast-status">
+                                      ${forecast.attributes.status || ""}
+                                    </div>
+                                  </div>
+                                </div>
+                              `
+                            )}
+                          </div>`
+                        : ""}
                     </div>`
-                  : ''}
-              </div>`
-            : ''}
-        `
-        : html`No data to show`}
-    </div>
-  </ha-card>
-`;
+                  : ""}
+              `
+            : html`No data to show`}
+        </div>
+      </ha-card>
+    `;
   }
 
   setConfig(config) {
     this.config = {
       hide_yesterday: false,
       show_cloth: false,
-      background_style: 'gradient',
+      background_style: "gradient",
       show_forecast: false,
       forecast_days: 3,
-      ...config
+      ...config,
     };
   }
 
   getCardSize() {
-    if (!this.config.hide_yesterday && this.lastDayState && Object.keys(this.lastDayState).length > 0) {
+    if (
+      !this.config.hide_yesterday &&
+      this.lastDayState &&
+      Object.keys(this.lastDayState).length > 0
+    ) {
       return 4; // Larger size when yesterday section is shown
     }
     return 3;
@@ -560,9 +635,9 @@ class YerushamayimCard extends LitElement {
     return {
       hide_yesterday: false,
       show_cloth: false,
-      background_style: 'gradient',
+      background_style: "gradient",
       show_forecast: false,
-      forecast_days: 3
+      forecast_days: 3,
     };
   }
 
@@ -571,12 +646,10 @@ class YerushamayimCard extends LitElement {
       :host {
         font-family: "Rubik", "Open Sans", cursive;
       }
-      
       ha-card {
         height: 100%;
         overflow: hidden;
       }
-      
       .container {
         border-radius: var(--ha-card-border-radius, 12px);
         box-shadow: var(
@@ -592,26 +665,40 @@ class YerushamayimCard extends LitElement {
         display: flex;
         flex-direction: column;
       }
-      
-      .container-top {
+
+      .logo-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 12px;
+      }
+
+      .columns-container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-        align-items: flex-start;
         gap: 20px;
         flex: 1;
       }
-      
-      .container-bottom {
-        margin-top: 16px;
-        /* FIXED: Prevent overflow */
-        flex-shrink: 0;
-      }
-      
-      #left {
+
+      .column {
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
+        flex: 1;
+      }
+
+      .left-column {
         flex-basis: 40%;
+      }
+
+      .right-column {
+        flex-basis: 60%;
+      }
+
+      .column-section {
+        display: flex;
+        flex-direction: column;
       }
       #status-container {
         min-height: 105px;
@@ -641,58 +728,64 @@ class YerushamayimCard extends LitElement {
       }
       img.logo {
         width: 50px;
-        margin-bottom: 8px;
         filter: brightness(0) invert(1);
       }
-      #right {
-        flex-basis: 60%;
+      .block {
+        margin-bottom: 4px;
       }
-      .block { }
       #current-temp {
         font-size: 24px;
       }
       .today-status {
         display: -webkit-box;
-        -webkit-line-clamp: 2; /* Limit to 3 lines */
+        -webkit-line-clamp: 3; /* Limit to 3 lines */
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
         line-height: 1.3;
       }
-      .yesterday-container {
-        display: flex;
-        flex-direction: column;
-      }
-      .yesterday-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 16px;
-      }
-      
-      .yesterday-temperature {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-start;
-        min-height: fit-content;
-        flex: 1;
-      }
-      .yesterday-status {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: flex-end;
-        min-height: fit-content;
-        flex-shrink: 0;
+      .yesterday-section {
+        margin-top: 8px;
+        padding-top: 8px;
+        border-top: 1px solid rgba(255, 255, 255, 0.2);
       }
 
+      .yesterday-label {
+        font-size: 14px;
+        margin-bottom: 4px;
+        opacity: 0.9;
+      }
+
+      .yesterday-temp {
+        font-size: 20px;
+        margin-bottom: 4px;
+      }
+
+      .yesterday-feels {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .yesterday-icon-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 4px;
+      }
+
+      .yesterday-icon {
+        height: 30px;
+      }
+
+      .yesterday-status-text {
+        font-size: 14px;
+        text-align: center;
+        opacity: 0.9;
+      }
       .forecast-section {
         margin-top: 16px;
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding-top: 12px;
       }
-
       .forecast-toggle {
         display: flex;
         justify-content: space-between;
@@ -702,29 +795,24 @@ class YerushamayimCard extends LitElement {
         border-radius: 8px;
         transition: background-color 0.2s;
       }
-
       .forecast-toggle:hover {
         background-color: rgba(255, 255, 255, 0.1);
       }
-
       .forecast-toggle span {
         font-weight: 500;
         font-size: 16px;
       }
-
       .forecast-days {
         margin-top: 12px;
         display: flex;
         flex-direction: column;
         gap: 12px;
       }
-
       .forecast-day {
         background: rgba(255, 255, 255, 0.08);
         border-radius: 8px;
         padding: 12px;
       }
-
       .forecast-day-header {
         display: flex;
         justify-content: space-between;
@@ -733,29 +821,24 @@ class YerushamayimCard extends LitElement {
         padding-bottom: 8px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       }
-
       .forecast-day-header strong {
         font-size: 15px;
       }
-
       .forecast-day-date {
         font-size: 13px;
         opacity: 0.8;
       }
-
       .forecast-day-content {
         display: flex;
         flex-direction: column;
         gap: 8px;
       }
-
       .forecast-temps {
         display: flex;
         justify-content: space-around;
         align-items: center;
         gap: 8px;
       }
-
       .forecast-temp-item {
         display: flex;
         flex-direction: column;
@@ -763,16 +846,13 @@ class YerushamayimCard extends LitElement {
         gap: 4px;
         flex: 1;
       }
-
       .forecast-temp-item img {
         height: 24px;
         width: 24px;
       }
-
       .forecast-temp-item span {
         font-size: 14px;
       }
-
       .forecast-cloth {
         display: flex;
         justify-content: space-around;
@@ -780,12 +860,10 @@ class YerushamayimCard extends LitElement {
         gap: 8px;
         margin-top: 4px;
       }
-
       .forecast-cloth img {
         height: 24px;
         width: 24px;
       }
-
       .forecast-status {
         font-size: 13px;
         text-align: center;
@@ -803,5 +881,5 @@ window.customCards.push({
   name: "Yerushamayim Weather Card",
   preview: true,
   description: "Unofficial Yerushamayim Home Assistant dashboard card",
-  documentationURL: "https://github.com/chilikla/yerushamayim-card"
+  documentationURL: "https://github.com/chilikla/yerushamayim-card",
 });
