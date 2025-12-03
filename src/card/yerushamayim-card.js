@@ -184,9 +184,6 @@ class YerushamayimCard extends LitElement {
           ${this.temperatureStateStr !== "unavailable" &&
           this.temperatureState.attributes.temperature !== null
             ? html`
-                <div class="logo-header">
-                  <img class="logo" src="${this.logoUrl}" />
-                </div>
                 <div class="columns-container">
                   <div class="column left-column">
                     <div class="column-section">
@@ -252,19 +249,21 @@ class YerushamayimCard extends LitElement {
                     </div>
                     ${!this.config.hide_yesterday && this.lastDayState
                       ? html`<div class="column-section yesterday-section" dir="rtl">
-                          <div class="yesterday-label">אתמול:</div>
-                          <div class="yesterday-temp">
-                            <span dir="rtl"> C°</span>
-                            <span>${this.lastDayState.temperature}</span>
+                          <div class="yesterday-icon-container">
+                            <img
+                              class="yesterday-icon"
+                              src="${this.lastDayState.cloth_icon}"
+                            />
                           </div>
-                          <div class="yesterday-feels">
-                            <span>הרגיש כמו:</span>
-                            <bdi>
-                              ${this.lastDayState.apparent_temperature} °C
-                            </bdi>
+                          <div class="yesterday-status-text">
+                            ${this.lastDayState.status}
                           </div>
                         </div>`
                       : html`<div />`}
+                  </div>
+
+                  <div class="logo-center">
+                    <img class="logo" src="${this.logoUrl}" />
                   </div>
 
                   <div class="column right-column" dir="rtl">
@@ -306,14 +305,16 @@ class YerushamayimCard extends LitElement {
                     </div>
                     ${!this.config.hide_yesterday && this.lastDayState
                       ? html`<div class="column-section yesterday-section" dir="rtl">
-                          <div class="yesterday-icon-container">
-                            <img
-                              class="yesterday-icon"
-                              src="${this.lastDayState.cloth_icon}"
-                            />
+                          <div class="yesterday-label">אתמול:</div>
+                          <div class="yesterday-temp">
+                            <span dir="rtl"> C°</span>
+                            <span>${this.lastDayState.temperature}</span>
                           </div>
-                          <div class="yesterday-status-text">
-                            ${this.lastDayState.status}
+                          <div class="yesterday-feels">
+                            <span>הרגיש כמו:</span>
+                            <bdi>
+                              ${this.lastDayState.apparent_temperature} °C
+                            </bdi>
                           </div>
                         </div>`
                       : html`<div />`}
@@ -479,18 +480,11 @@ class YerushamayimCard extends LitElement {
         flex-direction: column;
       }
 
-      .logo-header {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 12px;
-      }
-
       .columns-container {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
-        gap: 20px;
+        align-items: flex-start;
+        gap: 16px;
         flex: 1;
       }
 
@@ -505,8 +499,15 @@ class YerushamayimCard extends LitElement {
         flex-basis: 40%;
       }
 
+      .logo-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
       .right-column {
-        flex-basis: 60%;
+        flex-basis: 40%;
       }
 
       .column-section {
@@ -558,9 +559,7 @@ class YerushamayimCard extends LitElement {
         line-height: 1.3;
       }
       .yesterday-section {
-        margin-top: 8px;
-        padding-top: 8px;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
+        margin-top: 12px;
       }
 
       .yesterday-label {
@@ -582,11 +581,11 @@ class YerushamayimCard extends LitElement {
       .yesterday-icon-container {
         display: flex;
         justify-content: center;
-        margin-bottom: 4px;
+        margin-bottom: 8px;
       }
 
       .yesterday-icon {
-        height: 30px;
+        height: 36px;
       }
 
       .yesterday-status-text {
