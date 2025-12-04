@@ -494,7 +494,7 @@ class YerushamayimCard extends LitElement {
       .columns-container {
         display: flex;
         flex-direction: row;
-        align-items: flex-start;
+        align-items: stretch;
         gap: 16px;
         flex: 1;
       }
@@ -539,7 +539,7 @@ class YerushamayimCard extends LitElement {
       #forecast-icons {
         display: flex;
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
         gap: 5px;
       }
       .forecast-icon {
