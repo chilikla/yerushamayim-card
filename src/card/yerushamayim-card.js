@@ -353,8 +353,7 @@ class YerushamayimCard extends LitElement {
                                 <div class="forecast-day" dir="rtl">
                                   <div class="forecast-day-header">
                                     <strong
-                                      >${forecast.attributes.day_name_heb ||
-                                      `יום ${index + 1}`}</strong
+                                      >${`יום ${forecast.attributes.day_name_heb}`}</strong
                                     >
                                     <span class="forecast-day-date"
                                       >${forecast.attributes.date || ""}</span
