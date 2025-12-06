@@ -390,7 +390,7 @@ class YerushamayimCard extends LitElement {
                               </div> `
                           : html``}
                       </div>
-                      <div id="forecast-icons">
+                      <div>
                         <div class="forecast-icon">
                           <img
                             src="https://v2013.02ws.co.il/img/night_icon_night.png"
@@ -701,7 +701,7 @@ class YerushamayimCard extends LitElement {
 
       .logo-center {
         display: flex;
-        align-items: center;
+        align-items: flex-start;
         justify-content: center;
         flex-shrink: 0;
       }
@@ -761,6 +761,7 @@ class YerushamayimCard extends LitElement {
       }
       .yesterday-section {
         margin-top: 12px;
+        align-self: flex-start;
       }
 
       .yesterday-label {
