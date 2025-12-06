@@ -96,7 +96,7 @@ class YerushamayimCard extends LitElement {
     const days = this.config.forecast_days || 3;
     this._forecastStates = [];
 
-    for (let i = 1; i <= days; i++) {
+    for (let i = 2; i <= days + 1; i++) {
       const entityId = `${SENSOR_BASE}forecast_day_${i}`;
       const state = this.hass.states[entityId];
       if (state) {
@@ -353,7 +353,7 @@ class YerushamayimCard extends LitElement {
                                 <div class="forecast-day" dir="rtl">
                                   <div class="forecast-day-header">
                                     <strong
-                                      >${forecast.attributes.day_name ||
+                                      >${forecast.attributes.day_name_heb ||
                                       `יום ${index + 1}`}</strong
                                     >
                                     <span class="forecast-day-date"
@@ -611,6 +611,7 @@ class YerushamayimCard extends LitElement {
         margin-top: 16px;
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding-top: 12px;
+        direction: rtl;
       }
       .forecast-toggle {
         display: flex;

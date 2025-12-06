@@ -87,12 +87,12 @@ class YerushamayimCardEditor extends LitElement {
           <div class="option sub-option">
             <label>
               Number of Forecast Days
-              <div class="secondary">How many days to show in the forecast (1-7)</div>
+              <div class="secondary">How many days to show in the forecast (1-6)</div>
             </label>
             <input
               type="number"
               min="1"
-              max="7"
+              max="6"
               .value=${this.config.forecast_days || 3}
               .configValue=${"forecast_days"}
               @change=${this.configChanged}
