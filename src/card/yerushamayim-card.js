@@ -504,7 +504,6 @@ class YerushamayimCard extends LitElement {
         flex-direction: column;
         justify-content: space-between;
         flex: 1;
-        height: 100%;
       }
 
       .left-column {
@@ -573,7 +572,7 @@ class YerushamayimCard extends LitElement {
         line-height: 1.3;
       }
       .yesterday-section {
-        margin-top: 12px;
+        margin-top: 20px;
         align-self: flex-start;
       }
 
