@@ -203,7 +203,7 @@ class YerushamayimCard extends LitElement {
                               </div> `
                           : html``}
                       </div>
-                      <div>
+                      <div id="forecast-icons">
                         <div class="forecast-icon">
                           <img
                             src="https://v2013.02ws.co.il/img/night_icon_night.png"
@@ -494,7 +494,7 @@ class YerushamayimCard extends LitElement {
       .columns-container {
         display: flex;
         flex-direction: row;
-        align-items: stretch;
+        align-items: flex-start;
         gap: 16px;
         flex: 1;
       }
@@ -504,10 +504,12 @@ class YerushamayimCard extends LitElement {
         flex-direction: column;
         justify-content: space-between;
         flex: 1;
+        height: 100%;
       }
 
       .left-column {
         flex-basis: 40%;
+        align-self: stretch;
       }
 
       .logo-center {
@@ -519,6 +521,7 @@ class YerushamayimCard extends LitElement {
 
       .right-column {
         flex-basis: 40%;
+        align-self: stretch;
       }
 
       .column-section {
