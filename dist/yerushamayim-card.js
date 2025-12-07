@@ -554,6 +554,9 @@ class YerushamayimCard extends LitElement {
                                         >
                                       </div>
                                     </div>
+                                    <div class="forecast-status">
+                                      ${forecast.attributes.status || ""}
+                                    </div>
                                   </div>
                                   <div class="forecast-day-content">
                                     <div class="forecast-temps">
@@ -607,9 +610,6 @@ class YerushamayimCard extends LitElement {
                                           />
                                         </div>`
                                       : ""}
-                                    <div class="forecast-status">
-                                      ${forecast.attributes.status || ""}
-                                    </div>
                                   </div>
                                 </div>
                               `
@@ -901,9 +901,11 @@ class YerushamayimCard extends LitElement {
         width: 24px;
       }
       .forecast-status {
-        font-size: 13px;
-        text-align: center;
-        margin-top: 4px;
+        font-size: 12px;
+        text-align: left;
+        opacity: 0.9;
+        max-width: 50%;
+        line-height: 1.3;
         opacity: 0.9;
       }
     `;
