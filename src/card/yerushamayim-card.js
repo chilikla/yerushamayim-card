@@ -352,12 +352,21 @@ class YerushamayimCard extends LitElement {
                               (forecast, index) => html`
                                 <div class="forecast-day" dir="rtl">
                                   <div class="forecast-day-header">
-                                    <strong
-                                      >${`יום ${forecast.attributes.day_name_heb}`}</strong
-                                    >
-                                    <span class="forecast-day-date"
-                                      >${forecast.attributes.date || ""}</span
-                                    >
+                                    <div class="forecast-day-title">
+                                      <img
+                                        class="forecast-day-icon"
+                                        src="${forecast.attributes.day_icon}"
+                                        title="${forecast.attributes.status || ""}"
+                                      />
+                                      <div class="forecast-day-text">
+                                        <strong
+                                          >${`יום ${forecast.attributes.day_name_heb}`}</strong
+                                        >
+                                        <span class="forecast-day-date"
+                                          >${forecast.attributes.date || ""}</span
+                                        >
+                                      </div>
+                                    </div>
                                   </div>
                                   <div class="forecast-day-content">
                                     <div class="forecast-temps">
@@ -646,6 +655,20 @@ class YerushamayimCard extends LitElement {
         margin-bottom: 8px;
         padding-bottom: 8px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      }
+      .forecast-day-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .forecast-day-icon {
+        height: 40px;
+        width: 40px;
+        flex-shrink: 0;
+      }
+      .forecast-day-text {
+        display: flex;
+        flex-direction: column;
       }
       .forecast-day-header strong {
         font-size: 15px;
