@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/chilikla/yerushamayim-card/compare/v1.5.3...v1.6.0) (2025-12-07)
+
+
+### Features
+
+* add configuration UI, update layout and add forecast for next days ([#56](https://github.com/chilikla/yerushamayim-card/issues/56)) ([c90fbb0](https://github.com/chilikla/yerushamayim-card/commit/c90fbb02b4b0e4cb81cfdf0bf097e4f7da5b3e96))
+
 ## [1.5.3](https://github.com/chilikla/yerushamayim-card/compare/v1.5.2...v1.5.3) (2025-10-19)
 
 
