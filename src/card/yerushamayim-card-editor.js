@@ -23,7 +23,7 @@ class YerushamayimCardEditor extends LitElement {
 
     // Convert number inputs to actual numbers
     if (target.type === 'number') {
-      configValue = parseInt(configValue, 10);
+      configValue = parseInt(target.value, 10);
     }
 
     if (this.config[configKey] !== configValue) {
