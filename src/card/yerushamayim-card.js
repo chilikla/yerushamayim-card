@@ -101,15 +101,22 @@ class YerushamayimCard extends LitElement {
 
     // Check if forecast_day_1 is today or tomorrow
     const day1State = this.hass.states[ENTITIES.FORECAST];
-    const today = new Date();
-    const todayStr = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+    // Get today's date in IST (Israel Standard Time, UTC+2/UTC+3)
+    const now = new Date();
+    const istOffset = 2 * 60; // IST is UTC+2 (or UTC+3 during DST)
+    const istDate = new Date(now.getTime() + (istOffset + now.getTimezoneOffset()) * 60000);
+    const todayDay = istDate.getDate();
+    const todayMonth = istDate.getMonth() + 1;
 
     let startDay = 2; // Default: skip day_1 (today) and start from day_2
 
     if (day1State?.attributes?.date) {
-      const day1Date = day1State.attributes.date;
+      const day1Date = day1State.attributes.date; // Format: "DD/MM"
+      const [day1Day, day1Month] = day1Date.split('/').map(num => parseInt(num, 10));
+
       // If day_1 is not today (it's tomorrow or later), include it in the forecast
-      if (day1Date !== todayStr) {
+      if (day1Day !== todayDay || day1Month !== todayMonth) {
         startDay = 1;
       }
     }
