@@ -415,9 +415,12 @@ class YerushamayimCard extends LitElement {
     const attributes = alertsEntity.attributes || {};
     let publishedTime = attributes.alert_1_date || '';
 
-    // Fix time format for RTL display: move time after date if format is "HH:MM:SS YYYY-MM-DD"
-    if (publishedTime && publishedTime.match(/^\d{2}:\d{2}:\d{2} \d{4}-\d{2}-\d{2}$/)) {
-      const [time, date] = publishedTime.split(' ');
+    // Fix time format for RTL display: swap time and date if time comes first
+    // Handles formats like "HH:MM:SS YYYY-MM-DD" or "HH:MM YYYY-MM-DD"
+    const timeFirstPattern = /^(\d{2}:\d{2}(?::\d{2})?) (\d{4}-\d{2}-\d{2})$/;
+    const match = publishedTime.match(timeFirstPattern);
+    if (match) {
+      const [, time, date] = match;
       publishedTime = `${date} ${time}`;
     }
 
