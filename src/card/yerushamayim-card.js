@@ -22,6 +22,7 @@ const ENTITIES = {
   STATUS: SENSOR_BASE + "status",
   FORECAST: SENSOR_BASE + "forecast_day_1",
   PRECIPITATION: SENSOR_BASE + "precipitation",
+  ALERTS: SENSOR_BASE + "alerts",
 };
 
 class YerushamayimCard extends LitElement {
@@ -38,6 +39,7 @@ class YerushamayimCard extends LitElement {
       _baseUrl: { type: String, state: true },
       _forecastExpanded: { type: Boolean, state: true },
       _forecastStates: { type: Array, state: true },
+      _showAlertDialog: { type: Boolean, state: true },
     };
   }
 
@@ -46,6 +48,7 @@ class YerushamayimCard extends LitElement {
     this.lastDayState = {};
     this._forecastExpanded = false;
     this._forecastStates = [];
+    this._showAlertDialog = false;
     // Get the base URL for assets relative to the card's JS file
     this._baseUrl = this._getBaseUrl();
   }
@@ -96,7 +99,30 @@ class YerushamayimCard extends LitElement {
     const days = this.config.forecast_days || 3;
     this._forecastStates = [];
 
-    for (let i = 2; i <= days + 1; i++) {
+    // Check if forecast_day_1 is today or tomorrow
+    const day1State = this.hass.states[ENTITIES.FORECAST];
+
+    // Get today's date in IST (Israel Standard Time, UTC+2/UTC+3)
+    const now = new Date();
+    const istOffset = 2 * 60; // IST is UTC+2 (or UTC+3 during DST)
+    const istDate = new Date(now.getTime() + (istOffset + now.getTimezoneOffset()) * 60000);
+    const todayDay = istDate.getDate();
+    const todayMonth = istDate.getMonth() + 1;
+
+    let startDay = 2; // Default: skip day_1 (today) and start from day_2
+
+    if (day1State?.attributes?.date) {
+      const day1Date = day1State.attributes.date; // Format: "DD/MM"
+      const [day1Day, day1Month] = day1Date.split('/').map(num => parseInt(num, 10));
+
+      // If day_1 is not today (it's tomorrow or later), include it in the forecast
+      if (day1Day !== todayDay || day1Month !== todayMonth) {
+        startDay = 1;
+      }
+    }
+
+    // Collect forecast states starting from the determined day
+    for (let i = startDay; i < startDay + days; i++) {
       const entityId = `${SENSOR_BASE}forecast_day_${i}`;
       const state = this.hass.states[entityId];
       if (state) {
@@ -145,7 +171,14 @@ class YerushamayimCard extends LitElement {
   }
 
   handleClick() {
-    if (this.hass) {
+    if (!this.hass) return;
+
+    const clickBehavior = this.config.click_behavior || 'entities';
+
+    if (clickBehavior === 'alert') {
+      this._showAlertDialog = true;
+    } else {
+      // Default: navigate to entities
       const domain = "yerushamayim";
       window.history.pushState(
         null,
@@ -158,6 +191,28 @@ class YerushamayimCard extends LitElement {
       });
       window.dispatchEvent(event);
     }
+  }
+
+  _closeAlertDialog(e) {
+    e.stopPropagation();
+    this._showAlertDialog = false;
+  }
+
+  _getAlertData() {
+    const alertsEntity = this.hass?.states[ENTITIES.ALERTS];
+    if (!alertsEntity) {
+      return { hasAlert: false };
+    }
+
+    const attributes = alertsEntity.attributes || {};
+    const publishedTime = attributes.alert_1_date || '';
+
+    return {
+      hasAlert: true,
+      title: attributes.alert_1_title || 'עדכון',
+      description: attributes.alert_1_description?.trim() || alertsEntity.state || 'אין מידע זמין',
+      publishedTime: publishedTime,
+    };
   }
 
   _getBackgroundStyle() {
@@ -434,7 +489,39 @@ class YerushamayimCard extends LitElement {
               `
             : html`No data to show`}
         </div>
+        ${this._showAlertDialog ? this._renderAlertDialog() : ''}
       </ha-card>
+    `;
+  }
+
+  _renderAlertDialog() {
+    const alertData = this._getAlertData();
+
+    return html`
+      <div class="alert-dialog-overlay" @click="${this._closeAlertDialog}">
+        <div class="alert-dialog" @click="${(e) => e.stopPropagation()}" dir="rtl">
+          <div class="alert-dialog-header">
+            <h2>${alertData.hasAlert ? alertData.title : 'אין עדכונים'}</h2>
+            <button class="close-button" @click="${this._closeAlertDialog}">
+              <ha-icon icon="mdi:close"></ha-icon>
+            </button>
+          </div>
+          <div class="alert-dialog-content">
+            ${alertData.hasAlert
+              ? html`
+                  <div class="alert-message">
+                    ${alertData.description}
+                  </div>
+                  ${alertData.publishedTime
+                    ? html`<div class="alert-time">
+                        <strong>זמן פרסום:</strong> <span dir="ltr">${alertData.publishedTime}</span>
+                      </div>`
+                    : ''}
+                `
+              : html`<div class="no-alert">אין התראות פעילות כרגע</div>`}
+          </div>
+        </div>
+      </div>
     `;
   }
 
@@ -445,6 +532,7 @@ class YerushamayimCard extends LitElement {
       background_style: "gradient",
       show_forecast: false,
       forecast_days: 3,
+      click_behavior: "entities",
       ...config,
     };
   }
@@ -471,6 +559,7 @@ class YerushamayimCard extends LitElement {
       background_style: "gradient",
       show_forecast: false,
       forecast_days: 3,
+      click_behavior: "entities",
     };
   }
 
@@ -573,7 +662,7 @@ class YerushamayimCard extends LitElement {
       }
       .today-status {
         display: -webkit-box;
-        -webkit-line-clamp: 3; /* Limit to 3 lines */
+        -webkit-line-clamp: 4; /* Limit to 3 lines */
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -720,6 +809,80 @@ class YerushamayimCard extends LitElement {
         max-width: 50%;
         line-height: 1.3;
         opacity: 0.9;
+      }
+      .alert-dialog-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        padding: 16px;
+      }
+      .alert-dialog {
+        background: var(--ha-card-background, var(--card-background-color, white));
+        border-radius: 12px;
+        max-width: 500px;
+        width: 100%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        cursor: default;
+      }
+      .alert-dialog-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--divider-color);
+      }
+      .alert-dialog-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--primary-text-color);
+        cursor: text;
+      }
+      .close-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: var(--primary-text-color);
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+      .close-button:hover {
+        opacity: 1;
+      }
+      .alert-dialog-content {
+        padding: 20px;
+      }
+      .alert-message {
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--primary-text-color);
+        margin-bottom: 16px;
+        cursor: text;
+      }
+      .alert-time {
+        font-size: 14px;
+        color: var(--secondary-text-color);
+        margin-top: 8px;
+        cursor: text;
+      }
+      .alert-time strong {
+        color: var(--primary-text-color);
+      }
+      .no-alert {
+        font-size: 16px;
+        color: var(--secondary-text-color);
+        text-align: center;
+        padding: 20px;
       }
     `;
   }

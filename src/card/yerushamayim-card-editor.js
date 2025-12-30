@@ -18,12 +18,18 @@ class YerushamayimCardEditor extends LitElement {
 
   configChanged(ev) {
     const target = ev.target;
-    const configValue = target.checked !== undefined ? target.checked : target.value;
+    const configKey = target.configValue;
+    let configValue = target.checked !== undefined ? target.checked : target.value;
 
-    if (this.config[target.configValue] !== configValue) {
+    // Convert number inputs to actual numbers
+    if (target.type === 'number') {
+      configValue = parseInt(target.value, 10);
+    }
+
+    if (this.config[configKey] !== configValue) {
       this.config = {
         ...this.config,
-        [target.configValue]: configValue
+        [configKey]: configValue
       };
 
       const event = new CustomEvent("config-changed", {
@@ -113,6 +119,21 @@ class YerushamayimCardEditor extends LitElement {
             <option value="gradient">Gradient (Blue)</option>
             <option value="default">Default (Home Assistant Theme)</option>
             <option value="transparent">Transparent</option>
+          </select>
+        </div>
+
+        <div class="option">
+          <label>
+            Card Click Behavior
+            <div class="secondary">Choose what happens when clicking the card</div>
+          </label>
+          <select
+            .value=${this.config.click_behavior || 'entities'}
+            .configValue=${"click_behavior"}
+            @change=${this.configChanged}
+          >
+            <option value="entities">Open Yerushamayim Entities</option>
+            <option value="alert">Show Last Alert</option>
           </select>
         </div>
       </div>
