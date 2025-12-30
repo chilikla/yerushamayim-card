@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/chilikla/yerushamayim-card/compare/v1.6.0...v1.7.0) (2025-12-30)
+
+
+### Features
+
+* fix forecast part of card and add last alert dialog ([#58](https://github.com/chilikla/yerushamayim-card/issues/58)) ([4b5b49f](https://github.com/chilikla/yerushamayim-card/commit/4b5b49f6647ab0c068e13515d45add36de2ed02b))
+
 ## [1.6.0](https://github.com/chilikla/yerushamayim-card/compare/v1.5.3...v1.6.0) (2025-12-07)
 
 
