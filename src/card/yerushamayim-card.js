@@ -99,7 +99,23 @@ class YerushamayimCard extends LitElement {
     const days = this.config.forecast_days || 3;
     this._forecastStates = [];
 
-    for (let i = 2; i <= days + 1; i++) {
+    // Check if forecast_day_1 is today or tomorrow
+    const day1State = this.hass.states[ENTITIES.FORECAST];
+    const today = new Date();
+    const todayStr = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+
+    let startDay = 2; // Default: skip day_1 (today) and start from day_2
+
+    if (day1State?.attributes?.date) {
+      const day1Date = day1State.attributes.date;
+      // If day_1 is not today (it's tomorrow or later), include it in the forecast
+      if (day1Date !== todayStr) {
+        startDay = 1;
+      }
+    }
+
+    // Collect forecast states starting from the determined day
+    for (let i = startDay; i < startDay + days; i++) {
       const entityId = `${SENSOR_BASE}forecast_day_${i}`;
       const state = this.hass.states[entityId];
       if (state) {
@@ -182,11 +198,19 @@ class YerushamayimCard extends LitElement {
     }
 
     const attributes = alertsEntity.attributes || {};
+    let publishedTime = attributes.alert_1_date || '';
+
+    // Fix time format for RTL display: move time after date if format is "HH:MM:SS YYYY-MM-DD"
+    if (publishedTime && publishedTime.match(/^\d{2}:\d{2}:\d{2} \d{4}-\d{2}-\d{2}$/)) {
+      const [time, date] = publishedTime.split(' ');
+      publishedTime = `${date} ${time}`;
+    }
+
     return {
       hasAlert: true,
       title: attributes.alert_1_title || 'עדכון',
       description: attributes.alert_1_description?.trim() || alertsEntity.state || 'אין מידע זמין',
-      publishedTime: attributes.alert_1_date || '',
+      publishedTime: publishedTime,
     };
   }
 
@@ -820,6 +844,7 @@ class YerushamayimCard extends LitElement {
         font-size: 20px;
         font-weight: 500;
         color: var(--primary-text-color);
+        cursor: text;
       }
       .close-button {
         background: none;
@@ -841,12 +866,13 @@ class YerushamayimCard extends LitElement {
         line-height: 1.6;
         color: var(--primary-text-color);
         margin-bottom: 16px;
-        white-space: pre-wrap;
+        cursor: text;
       }
       .alert-time {
         font-size: 14px;
         color: var(--secondary-text-color);
         margin-top: 8px;
+        cursor: text;
       }
       .alert-time strong {
         color: var(--primary-text-color);
