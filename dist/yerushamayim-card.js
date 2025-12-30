@@ -393,7 +393,7 @@ class YerushamayimCard extends LitElement {
     return {
       hasAlert: true,
       title: attributes.alert_1_title || 'עדכון',
-      description: attributes.alert_1_description || alertsEntity.state || 'אין מידע זמין',
+      description: attributes.alert_1_description?.trim() || alertsEntity.state || 'אין מידע זמין',
       publishedTime: attributes.alert_1_date || '',
     };
   }
@@ -1014,6 +1014,7 @@ class YerushamayimCard extends LitElement {
         max-height: 80vh;
         overflow-y: auto;
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        cursor: default;
       }
       .alert-dialog-header {
         display: flex;
