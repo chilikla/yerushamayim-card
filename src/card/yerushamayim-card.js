@@ -22,6 +22,7 @@ const ENTITIES = {
   STATUS: SENSOR_BASE + "status",
   FORECAST: SENSOR_BASE + "forecast_day_1",
   PRECIPITATION: SENSOR_BASE + "precipitation",
+  ALERTS: SENSOR_BASE + "alerts",
 };
 
 class YerushamayimCard extends LitElement {
@@ -38,6 +39,7 @@ class YerushamayimCard extends LitElement {
       _baseUrl: { type: String, state: true },
       _forecastExpanded: { type: Boolean, state: true },
       _forecastStates: { type: Array, state: true },
+      _showAlertDialog: { type: Boolean, state: true },
     };
   }
 
@@ -46,6 +48,7 @@ class YerushamayimCard extends LitElement {
     this.lastDayState = {};
     this._forecastExpanded = false;
     this._forecastStates = [];
+    this._showAlertDialog = false;
     // Get the base URL for assets relative to the card's JS file
     this._baseUrl = this._getBaseUrl();
   }
@@ -145,7 +148,14 @@ class YerushamayimCard extends LitElement {
   }
 
   handleClick() {
-    if (this.hass) {
+    if (!this.hass) return;
+
+    const clickBehavior = this.config.click_behavior || 'entities';
+
+    if (clickBehavior === 'alert') {
+      this._showAlertDialog = true;
+    } else {
+      // Default: navigate to entities
       const domain = "yerushamayim";
       window.history.pushState(
         null,
@@ -158,6 +168,27 @@ class YerushamayimCard extends LitElement {
       });
       window.dispatchEvent(event);
     }
+  }
+
+  _closeAlertDialog(e) {
+    e.stopPropagation();
+    this._showAlertDialog = false;
+  }
+
+  _getAlertData() {
+    const alertsEntity = this.hass?.states[ENTITIES.ALERTS];
+    if (!alertsEntity) {
+      return { hasAlert: false };
+    }
+
+    const attributes = alertsEntity.attributes || {};
+    return {
+      hasAlert: true,
+      title: attributes.title || 'אזהרה',
+      description: attributes.description || alertsEntity.state || 'אין מידע זמין',
+      severity: attributes.severity || '',
+      publishedTime: attributes.published_time || '',
+    };
   }
 
   _getBackgroundStyle() {
@@ -434,7 +465,44 @@ class YerushamayimCard extends LitElement {
               `
             : html`No data to show`}
         </div>
+        ${this._showAlertDialog ? this._renderAlertDialog() : ''}
       </ha-card>
+    `;
+  }
+
+  _renderAlertDialog() {
+    const alertData = this._getAlertData();
+
+    return html`
+      <div class="alert-dialog-overlay" @click="${this._closeAlertDialog}">
+        <div class="alert-dialog" @click="${(e) => e.stopPropagation()}" dir="rtl">
+          <div class="alert-dialog-header">
+            <h2>${alertData.hasAlert ? alertData.title : 'אין התראות'}</h2>
+            <button class="close-button" @click="${this._closeAlertDialog}">
+              <ha-icon icon="mdi:close"></ha-icon>
+            </button>
+          </div>
+          <div class="alert-dialog-content">
+            ${alertData.hasAlert
+              ? html`
+                  <div class="alert-message">
+                    ${alertData.description}
+                  </div>
+                  ${alertData.publishedTime
+                    ? html`<div class="alert-time">
+                        <strong>זמן פרסום:</strong> ${alertData.publishedTime}
+                      </div>`
+                    : ''}
+                  ${alertData.severity
+                    ? html`<div class="alert-severity">
+                        <strong>חומרה:</strong> ${alertData.severity}
+                      </div>`
+                    : ''}
+                `
+              : html`<div class="no-alert">אין התראות פעילות כרגע</div>`}
+          </div>
+        </div>
+      </div>
     `;
   }
 
@@ -445,6 +513,7 @@ class YerushamayimCard extends LitElement {
       background_style: "gradient",
       show_forecast: false,
       forecast_days: 3,
+      click_behavior: "entities",
       ...config,
     };
   }
@@ -471,6 +540,7 @@ class YerushamayimCard extends LitElement {
       background_style: "gradient",
       show_forecast: false,
       forecast_days: 3,
+      click_behavior: "entities",
     };
   }
 
@@ -720,6 +790,79 @@ class YerushamayimCard extends LitElement {
         max-width: 50%;
         line-height: 1.3;
         opacity: 0.9;
+      }
+      .alert-dialog-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+        padding: 16px;
+      }
+      .alert-dialog {
+        background: var(--ha-card-background, var(--card-background-color, white));
+        border-radius: 12px;
+        max-width: 500px;
+        width: 100%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      }
+      .alert-dialog-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--divider-color);
+      }
+      .alert-dialog-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--primary-text-color);
+      }
+      .close-button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+        color: var(--primary-text-color);
+        opacity: 0.7;
+        transition: opacity 0.2s;
+      }
+      .close-button:hover {
+        opacity: 1;
+      }
+      .alert-dialog-content {
+        padding: 20px;
+      }
+      .alert-message {
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--primary-text-color);
+        margin-bottom: 16px;
+        white-space: pre-wrap;
+      }
+      .alert-time,
+      .alert-severity {
+        font-size: 14px;
+        color: var(--secondary-text-color);
+        margin-top: 8px;
+      }
+      .alert-time strong,
+      .alert-severity strong {
+        color: var(--primary-text-color);
+      }
+      .no-alert {
+        font-size: 16px;
+        color: var(--secondary-text-color);
+        text-align: center;
+        padding: 20px;
       }
     `;
   }
