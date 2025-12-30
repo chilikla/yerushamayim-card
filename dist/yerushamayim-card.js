@@ -392,10 +392,9 @@ class YerushamayimCard extends LitElement {
     const attributes = alertsEntity.attributes || {};
     return {
       hasAlert: true,
-      title: attributes.title || 'אזהרה',
-      description: attributes.description || alertsEntity.state || 'אין מידע זמין',
-      severity: attributes.severity || '',
-      publishedTime: attributes.published_time || '',
+      title: attributes.alert_1_title || 'עדכון',
+      description: attributes.alert_1_description || alertsEntity.state || 'אין מידע זמין',
+      publishedTime: attributes.alert_1_date || '',
     };
   }
 
@@ -685,7 +684,7 @@ class YerushamayimCard extends LitElement {
       <div class="alert-dialog-overlay" @click="${this._closeAlertDialog}">
         <div class="alert-dialog" @click="${(e) => e.stopPropagation()}" dir="rtl">
           <div class="alert-dialog-header">
-            <h2>${alertData.hasAlert ? alertData.title : 'אין התראות'}</h2>
+            <h2>${alertData.hasAlert ? alertData.title : 'אין עדכונים'}</h2>
             <button class="close-button" @click="${this._closeAlertDialog}">
               <ha-icon icon="mdi:close"></ha-icon>
             </button>
@@ -699,11 +698,6 @@ class YerushamayimCard extends LitElement {
                   ${alertData.publishedTime
                     ? html`<div class="alert-time">
                         <strong>זמן פרסום:</strong> ${alertData.publishedTime}
-                      </div>`
-                    : ''}
-                  ${alertData.severity
-                    ? html`<div class="alert-severity">
-                        <strong>חומרה:</strong> ${alertData.severity}
                       </div>`
                     : ''}
                 `
@@ -1056,14 +1050,12 @@ class YerushamayimCard extends LitElement {
         margin-bottom: 16px;
         white-space: pre-wrap;
       }
-      .alert-time,
-      .alert-severity {
+      .alert-time {
         font-size: 14px;
         color: var(--secondary-text-color);
         margin-top: 8px;
       }
-      .alert-time strong,
-      .alert-severity strong {
+      .alert-time strong {
         color: var(--primary-text-color);
       }
       .no-alert {
